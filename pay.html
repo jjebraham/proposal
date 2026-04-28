@@ -40,14 +40,20 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 .copy-btn:disabled,.btn-main:disabled{opacity:.5;cursor:not-allowed}
 .terms{font-size:12px;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:1rem}
 .terms ul{margin-right:1.2rem}
-.client-signature-preview{max-width:140px;height:60px;object-fit:contain;display:none;margin:5px auto}
+.contract{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px;line-height:2;font-size:13px;color:#111827}
+.contract h2{text-align:center;font-size:16px;margin-bottom:10px}
+.contract ul{padding-right:18px;margin-top:4px;margin-bottom:8px}
+.contract li{margin-bottom:3px}
+.signatures{display:flex;justify-content:space-between;margin-top:30px;gap:10px;flex-wrap:wrap}
+.signatures>div{text-align:center;min-width:180px;flex:1}
+.sign-line{border-top:1px solid #999;width:140px;margin:30px auto 5px}
+.client-signature-preview{max-width:140px;height:60px;object-fit:contain;display:none;margin:4px auto}
 .payment-note{margin-top:.8rem;font-size:12px}
 @media(max-width:600px){.row{flex-direction:column}}
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <div class="header">
     <div class="header-top">
       <button class="back-btn" onclick="window.location.href='index.html'">← بازگشت به انتخاب پلن</button>
@@ -65,14 +71,11 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
       <div class="row"><span>زمان تحویل نسخه عملیاتی</span><strong>پس از قسط سوم</strong></div>
       <div class="row"><span>انتقال مالکیت کامل</span><strong>پس از تسویه نهایی</strong></div>
     </div>
-    <div class="notice">
-      با پرداخت قسط اول، پروژه وارد مرحله اجرا می‌شود و برنامه‌ریزی طراحی، ساختار صفحات و آماده‌سازی اولیه آغاز خواهد شد.
-    </div>
+    <div class="notice">با پرداخت قسط اول، پروژه وارد مرحله اجرا می‌شود و برنامه‌ریزی طراحی، ساختار صفحات و آماده‌سازی اولیه آغاز خواهد شد.</div>
   </div>
 
   <div class="card">
     <div class="card-title">✍️ اطلاعات کارفرما و امضا</div>
-
     <label for="clientNameInput">نام و نام خانوادگی کارفرما</label>
     <input id="clientNameInput" class="input" placeholder="نام خود را وارد کنید"/>
 
@@ -81,7 +84,6 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 
     <label>امضا با انگشت یا موس</label>
     <canvas id="signature"></canvas>
-
     <div class="sig-actions">
       <button class="btn-light" onclick="clearSignature()">پاک کردن امضا</button>
     </div>
@@ -92,54 +94,78 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 
   <div class="card">
     <div class="card-title">📄 پیش‌نمایش قرارداد</div>
-
-    <div id="contract" style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px;line-height:2;font-size:13px;color:#111827">
-      <h2 style="text-align:center;font-size:16px;margin-bottom:10px">قرارداد اجرای پروژه وب‌سایت</h2>
+    <div id="contract" class="contract">
+      <h2>قرارداد اجرای پروژه وب‌سایت</h2>
 
       <p><strong>مجری:</strong> Amir Kiani</p>
-      <p><strong>کارفرما:</strong> <span id="clientName">....................</span></p>
+      <p><strong>کارفرما:</strong> <span id="contractClientName">....................</span></p>
 
-      <p><strong>موضوع:</strong> طراحی و اجرای وب‌سایت پلن استاندارد مطابق توضیحات صفحه قبل.</p>
+      <p><strong>موضوع:</strong> طراحی و اجرای یک وب‌سایت حرفه‌ای بر اساس پلن استاندارد شامل طراحی صفحات، زیرساخت فنی، سئو پایه و امکانات جذب مشتری مطابق توضیحات صفحه قبل.</p>
 
-      <p><strong>پرداخت:</strong>
-        <span id="selectedPlanText">۳۰۰ دلار در ماه — ۶ ماه</span>
-        و مبلغ قسط اول
-        <strong id="contractFirstPay">۳۰۰ USDT</strong>.
-      </p>
+      <p><strong>پرداخت:</strong><br>
+      پلن انتخابی: <span id="contractSelectedPlan">۳۰۰ دلار در ماه — ۶ ماه</span><br>
+      مبلغ قسط اول: <span id="contractFirstPay">۳۰۰ USDT</span><br>
+      اقساط به‌صورت ماهانه دریافت می‌گردد.</p>
 
-      <p><strong>تحویل:</strong> نسخه عملیاتی سایت پس از دریافت قسط سوم تحویل می‌شود.</p>
+      <p><strong>تحویل:</strong><br>
+      نسخه عملیاتی سایت پس از دریافت قسط سوم تحویل داده می‌شود.<br>
+      در طول اجرای پروژه، کارفرما امکان مشاهده روند پیشرفت و ارائه بازخورد خواهد داشت.</p>
 
-      <p><strong>مالکیت:</strong>
-        دسترسی لازم برای استفاده و مدیریت سایت پس از تحویل نسخه عملیاتی ارائه می‌شود؛
-        مالکیت کامل فایل‌ها، کد و دیتابیس پس از پرداخت قسط آخر منتقل می‌شود.
-      </p>
+      <p><strong>محدوده خدمات (Included):</strong></p>
+      <ul>
+        <li>طراحی کامل وب‌سایت دو زبانه (فارسی / انگلیسی)</li>
+        <li>ساخت تا ۱۵ صفحه اصلی خدمات و معرفی</li>
+        <li>پیاده‌سازی وردپرس قابل توسعه</li>
+        <li>راه‌اندازی بلاگ و امکان انتشار مقاله</li>
+        <li>۳ مقاله اولیه آماده انتشار</li>
+        <li>اتصال به واتساپ و فرم‌های جذب مشتری</li>
+        <li>سئو پایه شامل ساختار، کنسول گوگل و تنظیمات اولیه</li>
+        <li>پنل مدیریت ساده برای کارفرما</li>
+        <li>آموزش مدیریت سایت پس از تحویل</li>
+      </ul>
 
-      <p><strong>خارج از محدوده:</strong>
-        تولید مداوم محتوا، سئو ماهانه، سیستم کامل مدیریت املاک، AI، CRM و اتوماسیون فروش
-        در این پلن شامل نمی‌شود و به‌صورت ارتقا قابل اجرا است.
-      </p>
+      <p><strong>خارج از محدوده (Out of scope):</strong></p>
+      <ul>
+        <li>تولید مستمر محتوا یا مقاله‌نویسی ماهانه</li>
+        <li>سئو پیشرفته یا خدمات رشد ارگانیک بلندمدت</li>
+        <li>سیستم کامل مدیریت املاک شامل ثبت، فیلتر و دسته‌بندی حرفه‌ای</li>
+        <li>تولید خودکار محتوا با AI</li>
+        <li>سیستم CRM و اتوماسیون فروش</li>
+        <li>مدیریت تبلیغات یا کمپین‌های مارکتینگ</li>
+      </ul>
 
-      <p><strong>تأیید:</strong>
-        با امضای این صفحه، کارفرما تأیید می‌کند که محدوده خدمات، شرایط پرداخت و زمان‌بندی تحویل را مطالعه و قبول کرده است.
-      </p>
+      <p><strong>توضیح تکمیلی:</strong> موارد فوق در صورت نیاز به‌صورت ارتقا (Upgrade) قابل اجرا و توسعه هستند.</p>
 
-      <p><strong>تاریخ:</strong> ۱۴۰۵/۲/۸</p>
+      <p><strong>مالکیت:</strong><br>
+      پس از تحویل نسخه عملیاتی، دسترسی لازم برای استفاده و مدیریت سایت به کارفرما داده می‌شود.<br>
+      مالکیت نهایی فایل‌ها، کد و دیتابیس پس از تسویه کامل اقساط منتقل می‌گردد.</p>
 
-      <br>
+      <p><strong>هزینه‌های جانبی و نگهداری:</strong><br>
+      هزینه‌های مربوط به هاست، دامنه، سرویس‌های جانبی و نگهداری ماهانه در این قرارداد لحاظ نشده و در صورت نیاز جداگانه توافق می‌شود.</p>
 
-      <div style="display:flex;justify-content:space-between;margin-top:30px;gap:10px;flex-wrap:wrap">
-        <div style="text-align:center;min-width:180px;flex:1">
-          <div style="border-top:1px solid #999;width:140px;margin:30px auto 5px"></div>
+      <p><strong>تأیید:</strong> با امضای این صفحه، کارفرما تأیید می‌کند که:</p>
+      <ul>
+        <li>محدوده خدمات را مطالعه کرده است</li>
+        <li>ساختار پرداخت و زمان‌بندی را پذیرفته است</li>
+        <li>از موارد خارج از محدوده آگاه است</li>
+      </ul>
+
+      <p><strong>تاریخ:</strong> <span id="contractDate"></span></p>
+
+      <div class="signatures">
+        <div>
+          <div class="sign-line"></div>
           <p>امضای مجری</p>
           <p><strong>Amir Kiani</strong></p>
-          <p style="font-size:11px;color:#555">Approved by Kiani Development</p>
+          <p style="font-size:11px;color:#555">Kiani Development</p>
         </div>
 
-        <div style="text-align:center;min-width:180px;flex:1">
-          <div style="border-top:1px solid #999;width:140px;margin:30px auto 5px"></div>
+        <div>
+          <div class="sign-line"></div>
           <p>امضای کارفرما</p>
+          <p id="contractClientSignName">....................</p>
+          <p id="contractClientPhone">شماره تماس: ....................</p>
           <img id="clientSignaturePreview" class="client-signature-preview" alt="امضای کارفرما"/>
-          <p id="clientPhone">شماره تماس: ....................</p>
         </div>
       </div>
     </div>
@@ -168,7 +194,6 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
       </ul>
     </div>
   </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -189,6 +214,18 @@ function getSelectedPlan(){
 
 function getFirstPayment(plan){
   return plan.includes('۲۵۰') ? '۲۵۰ USDT' : '۳۰۰ USDT';
+}
+
+function getPersianDate(){
+  try {
+    return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).format(new Date());
+  } catch (error) {
+    return new Date().toLocaleDateString('fa-IR');
+  }
 }
 
 function isSignatureEmpty(){
@@ -252,20 +289,34 @@ function clearSignature(){
   document.getElementById('successMessage').style.display = 'none';
 }
 
-async function generateSignedPdf(){
-  const form = validateForm();
-  if(!form) return;
-
-  document.getElementById('clientName').innerText = form.name;
-  document.getElementById('clientPhone').innerText = 'شماره تماس: ' + form.phone;
+function updateContractPlaceholders(form){
+  const persianDate = getPersianDate();
+  document.getElementById('contractClientName').innerText = form.name;
+  document.getElementById('contractClientSignName').innerText = form.name;
+  document.getElementById('contractClientPhone').innerText = 'شماره تماس: ' + form.phone;
+  document.getElementById('contractSelectedPlan').innerText = selectedPlan;
+  document.getElementById('contractFirstPay').innerText = firstPayment;
+  document.getElementById('contractDate').innerText = persianDate;
 
   const signData = canvas.toDataURL('image/png');
   const signPreview = document.getElementById('clientSignaturePreview');
   signPreview.src = signData;
   signPreview.style.display = 'block';
 
+  return persianDate;
+}
+
+async function generateSignedPdf(){
+  const form = validateForm();
+  if(!form) return;
+
+  const persianDate = updateContractPlaceholders(form);
   const target = document.getElementById('contract');
-  const rendered = await html2canvas(target, {scale: 2, useCORS: true, backgroundColor: '#ffffff'});
+  const rendered = await html2canvas(target, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#ffffff'
+  });
 
   const imgData = rendered.toDataURL('image/png');
   const { jsPDF } = window.jspdf;
@@ -289,9 +340,9 @@ async function generateSignedPdf(){
     heightLeft -= (pageHeight - margin * 2);
   }
 
-  const datePart = new Date().toISOString().slice(0, 10);
   const safeName = form.name.replace(/\s+/g, '-');
-  pdf.save(`contract-${safeName}-${datePart}.pdf`);
+  const safeDate = persianDate.replace(/[\s/:]+/g, '-');
+  pdf.save(`contract-${safeName}-${safeDate}.pdf`);
 
   paymentEnabled = true;
   document.getElementById('successMessage').style.display = 'block';
@@ -316,7 +367,6 @@ function confirmPaymentWhatsapp(){
   if(!paymentEnabled) return;
   const clientName = document.getElementById('clientNameInput').value.trim() || 'بدون نام';
   const clientPhone = document.getElementById('clientPhoneInput').value.trim() || 'ثبت نشده';
-
   const message = `سلام،
 قرارداد پروژه را امضا و دانلود کردم.
 
@@ -325,6 +375,7 @@ function confirmPaymentWhatsapp(){
 شماره تماس: ${clientPhone}
 پرداخت قسط اول: ${firstPayment}
 
+فایل PDF قرارداد امضاشده دانلود شد.
 رسید پرداخت / Hash تراکنش را ارسال می‌کنم تا پروژه فعال شود.`;
 
   window.open('https://wa.me/905392905686?text=' + encodeURIComponent(message), '_blank');
@@ -333,9 +384,10 @@ function confirmPaymentWhatsapp(){
 function initData(){
   document.getElementById('planText').innerText = selectedPlan;
   document.getElementById('firstPay').innerText = firstPayment;
-  document.getElementById('selectedPlanText').innerText = selectedPlan;
+  document.getElementById('contractSelectedPlan').innerText = selectedPlan;
   document.getElementById('contractFirstPay').innerText = firstPayment;
   document.getElementById('payAmount').innerText = firstPayment;
+  document.getElementById('contractDate').innerText = getPersianDate();
 }
 
 initData();
