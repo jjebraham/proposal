@@ -29,7 +29,8 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 .contract-preview{background:#ffffff;border:1px solid #cbd5e1;border-radius:18px;padding:1.2rem;font-size:13px;color:#0f172a}
 .contract-preview h3{font-size:18px;margin-bottom:.6rem}
 .contract-preview h4{margin-top:.9rem;margin-bottom:.4rem;font-size:14px}
-.contract-preview ul{margin-right:1.2rem}
+.contract-preview ul{margin:0.4rem 1.2rem 0.6rem 0;padding:0;list-style-position:outside}
+.contract-preview li{display:list-item;line-height:2;text-align:right}
 .signature-row{display:flex;justify-content:space-between;gap:12px;margin-top:1rem;align-items:flex-end;flex-wrap:wrap}
 .sig-box{border-top:1px dashed #94a3b8;padding-top:.6rem;min-width:240px}
 #contractorSignatureBlock img{max-height:64px;max-width:180px;display:block}
@@ -74,30 +75,56 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
       <p>این قرارداد در تاریخ <strong id="contractDate">-</strong> بین کارفرما و پیمانکار تنظیم گردید.</p>
       <p><strong>نام کارفرما:</strong> <span id="contractClientName">-</span></p>
       <p><strong>شماره تماس:</strong> <span id="contractClientPhone">-</span></p>
-      <p><strong>پلن انتخابی:</strong> <span id="contractPlan">-</span></p>
-      <p><strong>پرداخت قسط اول:</strong> <span id="contractFirstPayment">-</span></p>
+      <h4>موضوع قرارداد</h4>
+      <p>طراحی و اجرای یک وب‌سایت حرفه‌ای بر اساس پلن استاندارد شامل طراحی صفحات، زیرساخت فنی، سئو پایه و امکانات جذب مشتری مطابق توضیحات صفحه قبل.</p>
 
-      <h4>موارد Included</h4>
+      <h4>پرداخت</h4>
+      <p>پلن انتخابی: <span id="contractPlan">-</span></p>
+      <p>مبلغ قسط اول: <span id="contractFirstPayment">-</span></p>
+      <p>اقساط به‌صورت ماهانه دریافت می‌گردد.</p>
+
+      <h4>محدوده خدمات</h4>
       <ul>
-        <li>طراحی و پیاده‌سازی صفحات اصلی وب‌سایت</li>
-        <li>راه‌اندازی نسخه عملیاتی پس از قسط سوم</li>
-        <li>تحویل دسترسی‌های مدیریتی مطابق پلن</li>
+        <li>طراحی کامل وب‌سایت دو زبانه (فارسی / انگلیسی)</li>
+        <li>ساخت تا ۱۵ صفحه اصلی خدمات و معرفی</li>
+        <li>پیاده‌سازی وردپرس قابل توسعه</li>
+        <li>راه‌اندازی بلاگ و امکان انتشار مقاله</li>
+        <li>۳ مقاله اولیه آماده انتشار</li>
+        <li>اتصال به واتساپ و فرم‌های جذب مشتری</li>
+        <li>سئو پایه شامل ساختار، کنسول گوگل و تنظیمات اولیه</li>
+        <li>پنل مدیریت ساده برای کارفرما</li>
+        <li>آموزش مدیریت سایت پس از تحویل</li>
       </ul>
 
-      <h4>موارد Out of scope</h4>
+      <h4>موارد خارج از محدوده</h4>
       <ul>
-        <li>هزینه دامنه، هاست و سرویس‌های شخص ثالث</li>
-        <li>درخواست‌های خارج از محدوده پلن توافق‌شده</li>
+        <li>تولید مستمر محتوا یا مقاله‌نویسی ماهانه</li>
+        <li>سئو پیشرفته یا خدمات رشد ارگانیک بلندمدت</li>
+        <li>سیستم کامل مدیریت املاک شامل ثبت، فیلتر و دسته‌بندی حرفه‌ای</li>
+        <li>تولید خودکار محتوا با AI</li>
+        <li>سیستم CRM و اتوماسیون فروش</li>
+        <li>مدیریت تبلیغات یا کمپین‌های مارکتینگ</li>
       </ul>
+      <p>موارد فوق در صورت نیاز به‌صورت ارتقا (Upgrade) قابل اجرا و توسعه هستند.</p>
 
-      <h4>Ownership</h4>
-      <p>مالکیت کامل فایل‌ها، کد و دیتابیس پس از تسویه نهایی به کارفرما منتقل می‌شود.</p>
+      <h4>تحویل</h4>
+      <p>نسخه عملیاتی سایت پس از دریافت قسط سوم تحویل داده می‌شود.</p>
+      <p>در طول اجرای پروژه، کارفرما امکان مشاهده روند پیشرفت و ارائه بازخورد خواهد داشت.</p>
 
-      <h4>Maintenance</h4>
-      <p>پشتیبانی و نگهداری طبق شرایط پلن و توافقات تکمیلی انجام می‌گردد.</p>
+      <h4>مالکیت</h4>
+      <p>پس از تحویل نسخه عملیاتی، دسترسی لازم برای استفاده و مدیریت سایت به کارفرما داده می‌شود.</p>
+      <p>مالکیت نهایی فایل‌ها، کد و دیتابیس پس از تسویه کامل اقساط منتقل می‌گردد.</p>
 
-      <h4>Acceptance</h4>
-      <p>با امضای این سند، کارفرما شرایط قرارداد و شروع پروژه را تأیید می‌کند.</p>
+      <h4>نگهداری و هزینه‌های جانبی</h4>
+      <p>هزینه‌های مربوط به هاست، دامنه، سرویس‌های جانبی و نگهداری ماهانه در این قرارداد لحاظ نشده و در صورت نیاز جداگانه توافق می‌شود.</p>
+
+      <h4>تأیید و پذیرش</h4>
+      <p>با امضای این صفحه، کارفرما تأیید می‌کند که:</p>
+      <ul>
+        <li>محدوده خدمات را مطالعه کرده است</li>
+        <li>ساختار پرداخت و زمان‌بندی را پذیرفته است</li>
+        <li>از موارد خارج از محدوده آگاه است</li>
+      </ul>
 
       <div class="signature-row">
         <div class="sig-box">
@@ -105,10 +132,10 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
           <img id="clientSignaturePreview" alt="Client Signature" style="display:block;max-height:64px;max-width:180px;margin-top:.5rem">
         </div>
         <div class="sig-box" id="contractorSignatureBlock">
-          <strong>امضای پیمانکار</strong>
           <img id="contractorSignatureImg" src="signature-amir-kiani.svg" alt="Contractor Signature" style="margin-top:.5rem">
+          <div style="margin-top:.4rem">امضای مجری</div>
+          <div>Amir Kiani</div>
           <div id="contractorFallback" class="fallback-sign">Kiani Development</div>
-          <div class="small-note">signature-amir-kiani.svg</div>
         </div>
       </div>
     </div>
@@ -138,6 +165,17 @@ const persianDate = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { dateStyle: '
 document.getElementById('planText').innerText = selectedPlan;
 document.getElementById('firstPay').innerText = firstPayment;
 document.getElementById('persianDateText').innerText = persianDate;
+
+const contractorSignatureImg = document.getElementById('contractorSignatureImg');
+const contractorFallback = document.getElementById('contractorFallback');
+contractorSignatureImg.addEventListener('error', () => {
+  contractorSignatureImg.style.display = 'none';
+  contractorFallback.style.display = 'block';
+});
+contractorSignatureImg.addEventListener('load', () => {
+  contractorSignatureImg.style.display = 'block';
+  contractorFallback.style.display = 'none';
+});
 
 const canvas = document.getElementById('signature');
 const ctx = canvas.getContext('2d');
@@ -238,13 +276,11 @@ async function generateSignedPdf(){
 
   populateContract();
 
-  const contractorImg = document.getElementById('contractorSignatureImg');
-  const contractorFallback = document.getElementById('contractorFallback');
-  if (contractorImg.complete && contractorImg.naturalWidth > 0) {
-    contractorImg.style.display = 'block';
+  if (contractorSignatureImg.complete && contractorSignatureImg.naturalWidth > 0) {
+    contractorSignatureImg.style.display = 'block';
     contractorFallback.style.display = 'none';
   } else {
-    contractorImg.style.display = 'none';
+    contractorSignatureImg.style.display = 'none';
     contractorFallback.style.display = 'block';
   }
 
