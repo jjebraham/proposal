@@ -32,17 +32,25 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 .btn-submit:hover{background:#1e40af}
 .success-message{display:none;background:#ecfdf5;border:1px solid #bbf7d0;color:#166534;border-radius:12px;padding:10px 12px;font-size:12.5px;font-weight:700;margin-top:.8rem}
 .payment{background:#ecfdf5;border:1px solid #bbf7d0;border-radius:16px;padding:1.2rem;color:#14532d;transition:.25s}
-.payment.highlight{box-shadow:0 0 0 3px rgba(34,197,94,.25);border-color:#22c55e}
+.payment.locked{opacity:.55;filter:grayscale(.15)}
+.payment.highlight{box-shadow:0 0 0 3px rgba(34,197,94,.25);border-color:#22c55e;opacity:1;filter:none}
 .wallet{display:block;background:#dcfce7;border:1px solid #86efac;border-radius:12px;padding:10px;margin-top:.6rem;direction:ltr;text-align:left;font-size:12px;word-break:break-all;color:#052e16}
-.copy-btn{margin-top:.7rem;background:#16a34a;color:#fff;border:none;border-radius:10px;padding:9px 18px;font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer}
+.copy-btn,.btn-main{margin-top:.7rem;background:#16a34a;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer}
+.btn-main{display:inline-block;background:#0f766e}
+.copy-btn:disabled,.btn-main:disabled{opacity:.5;cursor:not-allowed}
 .terms{font-size:12px;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:1rem}
 .terms ul{margin-right:1.2rem}
-.cta{background:linear-gradient(135deg,#0f172a,#1d4ed8);border-radius:24px;padding:1.8rem;text-align:center;color:#fff}
-.cta h2{font-size:20px;margin-bottom:.4rem}
-.cta p{font-size:13px;color:#dbeafe;margin-bottom:1.2rem}
-.btn-main{background:#fff;color:#1e3a8a;border:none;border-radius:14px;padding:14px 30px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer}
-.small{font-size:11px;color:#bfdbfe;margin-top:.8rem}
-@media(max-width:600px){.row{flex-direction:column}}
+.contract{background:#ffffff;border:1px solid #dbeafe;border-radius:16px;padding:1.1rem}
+.contract h3{font-size:18px;color:#0f172a;margin-bottom:.8rem}
+.contract p{font-size:13px;color:#1e293b;margin-bottom:.6rem}
+.contract .key{font-weight:800;color:#0f172a}
+.sign-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.6rem}
+.sign-box{border:1px dashed #94a3b8;border-radius:12px;padding:.8rem;min-height:100px;background:#f8fafc}
+.sign-title{font-size:12px;font-weight:800;color:#334155;margin-bottom:.5rem}
+.contractor-sign{font-family:cursive;font-size:19px;color:#0f172a;transform:rotate(-3deg);display:inline-block}
+.client-signature-preview{max-width:100%;height:64px;object-fit:contain;display:none}
+.payment-note{margin-top:.8rem;font-size:12px}
+@media(max-width:600px){.row{flex-direction:column}.sign-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -50,18 +58,18 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 
   <div class="header">
     <div class="header-top">
-      <button class="back-btn" onclick="history.back()">← بازگشت</button>
+      <button class="back-btn" onclick="window.location.href='index.html'">← بازگشت به انتخاب پلن</button>
     </div>
     <div class="badge">مرحله نهایی شروع پروژه</div>
-    <h1>امضا و پرداخت قسط اول</h1>
-    <p>برای فعال‌سازی پروژه، مشخصات را تأیید کنید و قسط اول را پرداخت نمایید.</p>
+    <h1>امضا، دانلود قرارداد و پرداخت قسط اول</h1>
+    <p>ابتدا قرارداد را امضا و دانلود کنید؛ سپس پرداخت قسط اول فعال می‌شود.</p>
   </div>
 
   <div class="card">
     <div class="card-title">📋 خلاصه پلن انتخابی</div>
     <div class="summary">
       <div class="row"><span>پلن انتخابی</span><strong id="planText">۳۰۰ دلار در ماه — ۶ ماه</strong></div>
-      <div class="row"><span>پرداخت امروز</span><strong id="firstPay">۳۰۰ USDT</strong></div>
+      <div class="row"><span>قسط اول قابل پرداخت</span><strong id="firstPay">۳۰۰ USDT</strong></div>
       <div class="row"><span>زمان تحویل نسخه عملیاتی</span><strong>پس از قسط سوم</strong></div>
       <div class="row"><span>انتقال مالکیت کامل</span><strong>پس از تسویه نهایی</strong></div>
     </div>
@@ -71,34 +79,63 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
   </div>
 
   <div class="card">
-    <div class="card-title">✍️ تأیید مشخصات و امضا</div>
+    <div class="card-title">✍️ اطلاعات کارفرما و امضا</div>
 
-    <label>نام و نام خانوادگی کارفرما</label>
-    <input id="clientName" class="input" placeholder="نام خود را وارد کنید">
+    <label for="clientName">نام و نام خانوادگی کارفرما</label>
+    <input id="clientName" class="input" placeholder="نام خود را وارد کنید"/>
 
-    <label>شماره تماس / واتساپ</label>
-    <input id="clientPhone" class="input" placeholder="مثلاً +90 ...">
+    <label for="clientPhone">شماره تماس / واتساپ</label>
+    <input id="clientPhone" class="input" placeholder="مثلاً +90 ..."/>
 
     <label>امضا با انگشت یا موس</label>
     <canvas id="signature"></canvas>
 
-    <button class="btn-submit" onclick="validateForm()">تأیید اطلاعات و ادامه به پرداخت</button>
-    <div class="success-message" id="successMessage">اطلاعات شما ثبت شد، لطفاً پرداخت را انجام دهید</div>
-
     <div class="sig-actions">
       <button class="btn-light" onclick="clearSignature()">پاک کردن امضا</button>
+    </div>
+
+    <button class="btn-submit" onclick="generateSignedPdf()">ثبت امضا و دانلود قرارداد</button>
+    <div class="success-message" id="successMessage">قرارداد امضاشده دانلود شد. اکنون می‌توانید قسط اول را پرداخت کنید.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📄 پیش‌نمایش قرارداد</div>
+    <div class="contract" id="contractToPdf">
+      <h3>قرارداد اجرای پروژه وب‌سایت</h3>
+      <p><span class="key">مجری:</span> [Your Name / Brand]</p>
+      <p><span class="key">کارفرما:</span> <span id="contractClientName">....................</span></p>
+      <p><span class="key">موضوع:</span> طراحی و اجرای وب‌سایت پلن استاندارد مطابق توضیحات صفحه قبل.</p>
+      <p><span class="key">پرداخت:</span> پلن انتخابی <span id="contractPlanText">۳۰۰ دلار در ماه — ۶ ماه</span> و مبلغ قسط اول <span id="contractFirstPay">۳۰۰ USDT</span>.</p>
+      <p><span class="key">تحویل:</span> نسخه عملیاتی سایت پس از دریافت قسط سوم تحویل می‌شود.</p>
+      <p><span class="key">مالکیت:</span> دسترسی لازم برای استفاده و مدیریت سایت پس از تحویل نسخه عملیاتی ارائه می‌شود؛ مالکیت کامل فایل‌ها، کد و دیتابیس پس از پرداخت قسط آخر منتقل می‌شود.</p>
+      <p><span class="key">خارج از محدوده:</span> تولید مداوم محتوا، سئو ماهانه، سیستم کامل مدیریت املاک، AI، CRM و اتوماسیون فروش در این پلن شامل نمی‌شود و به‌صورت ارتقا قابل اجرا است.</p>
+      <p><span class="key">تأیید:</span> با امضای این صفحه، کارفرما تأیید می‌کند که محدوده خدمات، شرایط پرداخت و زمان‌بندی تحویل را مطالعه و قبول کرده است.</p>
+      <p><span class="key">تاریخ:</span> <span id="contractDate"></span></p>
+
+      <div class="sign-grid">
+        <div class="sign-box">
+          <div class="sign-title">امضای مجری</div>
+          <p>[Your Name / Brand]</p>
+          <div class="contractor-sign">Approved by [Your Name]</div>
+        </div>
+        <div class="sign-box">
+          <div class="sign-title">امضای کارفرما</div>
+          <img id="clientSignPreview" class="client-signature-preview" alt="امضای کارفرما"/>
+          <p id="contractClientPhone">شماره تماس: ....................</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="card" id="paymentSection">
     <div class="card-title">💳 پرداخت قسط اول</div>
-    <div class="payment" id="paymentBox">
+    <div class="payment locked" id="paymentBox">
+      <p>مبلغ قسط اول: <strong id="payAmount">۳۰۰ USDT</strong></p>
       <strong>USDT (BEP20):</strong>
       <code class="wallet" id="wallet">0x02a93c138346AFc5d8F6a4B9e23b0167a8B55FD3</code>
-      <button class="copy-btn" onclick="copyWallet()">کپی آدرس کیف پول</button>
-      <p style="margin-top:.8rem;font-size:12px">
-        لطفاً بعد از پرداخت، رسید یا Hash تراکنش را از طریق واتساپ ارسال کنید.
-      </p>
+      <button class="copy-btn" id="copyBtn" onclick="copyWallet()" disabled>کپی آدرس کیف پول</button>
+      <p class="payment-note">بعد از پرداخت، لطفاً رسید یا Hash تراکنش را از طریق واتساپ ارسال کنید.</p>
+      <button class="btn-main" id="waBtn" onclick="confirmPaymentWhatsapp()" disabled>ارسال تأیید پرداخت در واتساپ</button>
     </div>
   </div>
 
@@ -110,37 +147,40 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
         <li>نسخه عملیاتی سایت پس از دریافت قسط سوم تحویل می‌شود.</li>
         <li>دسترسی لازم برای استفاده و مدیریت سایت پس از تحویل نسخه عملیاتی ارائه می‌شود.</li>
         <li>مالکیت کامل فایل‌ها، کد و دیتابیس پس از پرداخت قسط آخر منتقل می‌شود.</li>
-        <li>مبالغ پرداخت‌شده بابت خدمات انجام‌شده غیرقابل‌استرداد است.</li>
-        <li>هزینه دامنه، هاست و سرویس‌های جانبی در صورت نیاز جداگانه محاسبه می‌شود.</li>
       </ul>
     </div>
   </div>
 
-  <div class="cta">
-    <h2>پرداخت انجام شد؟</h2>
-    <p>بعد از پرداخت قسط اول، رسید را ارسال کنید تا پروژه فعال شود.</p>
-    <button class="btn-main" onclick="confirmPayment()">ارسال تأیید پرداخت در واتساپ</button>
-    <div class="small">این پیام شامل پلن انتخابی، نام کارفرما و درخواست شروع پروژه خواهد بود.</div>
-  </div>
-
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script>
-const params = new URLSearchParams(window.location.search);
-const selectedPlan = params.get('plan') || '۳۰۰ دلار در ماه — ۶ ماه';
-
-document.getElementById('planText').innerText = selectedPlan;
-document.getElementById('firstPay').innerText = selectedPlan.includes('۲۵۰') ? '۲۵۰ USDT' : '۳۰۰ USDT';
-
-function copyWallet(){
-  const wallet = document.getElementById('wallet').innerText.trim();
-  navigator.clipboard.writeText(wallet);
-  alert('آدرس کیف پول کپی شد.');
-}
+const selectedPlan = getSelectedPlan();
+const firstPayment = getFirstPayment(selectedPlan);
+let paymentEnabled = false;
 
 const canvas = document.getElementById('signature');
 const ctx = canvas.getContext('2d');
 let drawing = false;
+
+function getSelectedPlan(){
+  const params = new URLSearchParams(window.location.search);
+  return params.get('plan') || '۳۰۰ دلار در ماه — ۶ ماه';
+}
+
+function getFirstPayment(plan){
+  return plan.includes('۲۵۰') ? '۲۵۰ USDT' : '۳۰۰ USDT';
+}
+
+function initPlanData(){
+  document.getElementById('planText').innerText = selectedPlan;
+  document.getElementById('firstPay').innerText = firstPayment;
+  document.getElementById('payAmount').innerText = firstPayment;
+  document.getElementById('contractPlanText').innerText = selectedPlan;
+  document.getElementById('contractFirstPay').innerText = firstPayment;
+  document.getElementById('contractDate').innerText = new Date().toLocaleDateString('fa-IR');
+}
 
 function resizeCanvas(){
   const ratio = window.devicePixelRatio || 1;
@@ -152,16 +192,11 @@ function resizeCanvas(){
   ctx.lineCap = 'round';
   ctx.strokeStyle = '#111827';
 }
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
 
 function getPos(e){
   const rect = canvas.getBoundingClientRect();
   const touch = e.touches ? e.touches[0] : e;
-  return {
-    x: touch.clientX - rect.left,
-    y: touch.clientY - rect.top
-  };
+  return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
 }
 
 function startDraw(e){
@@ -184,25 +219,16 @@ function stopDraw(){
   drawing = false;
 }
 
-canvas.addEventListener('mousedown', startDraw);
-canvas.addEventListener('mousemove', draw);
-canvas.addEventListener('mouseup', stopDraw);
-canvas.addEventListener('mouseleave', stopDraw);
-canvas.addEventListener('touchstart', startDraw);
-canvas.addEventListener('touchmove', draw);
-canvas.addEventListener('touchend', stopDraw);
-
 function clearSignature(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  document.getElementById('clientSignPreview').style.display = 'none';
   document.getElementById('successMessage').style.display = 'none';
 }
 
 function isSignatureEmpty(){
   const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
   for(let i = 3; i < pixels.length; i += 4){
-    if(pixels[i] !== 0){
-      return false;
-    }
+    if(pixels[i] !== 0) return false;
   }
   return true;
 }
@@ -210,45 +236,106 @@ function isSignatureEmpty(){
 function validateForm(){
   const name = document.getElementById('clientName').value.trim();
   const phone = document.getElementById('clientPhone').value.trim();
-
   if(!name || !phone || isSignatureEmpty()){
     alert('لطفاً نام، شماره تماس و امضا را کامل کنید');
-    return;
+    return null;
+  }
+  return {name, phone};
+}
+
+async function generateSignedPdf(){
+  const form = validateForm();
+  if(!form) return;
+
+  document.getElementById('contractClientName').innerText = form.name;
+  document.getElementById('contractClientPhone').innerText = 'شماره تماس: ' + form.phone;
+
+  const signImg = canvas.toDataURL('image/png');
+  const signPreview = document.getElementById('clientSignPreview');
+  signPreview.src = signImg;
+  signPreview.style.display = 'block';
+
+  const contract = document.getElementById('contractToPdf');
+  const rendered = await html2canvas(contract, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#ffffff'
+  });
+
+  const imgData = rendered.toDataURL('image/png');
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p', 'mm', 'a4');
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const margin = 10;
+  const usableWidth = pageWidth - (margin * 2);
+  const imgHeight = (rendered.height * usableWidth) / rendered.width;
+
+  let heightLeft = imgHeight;
+  let position = margin;
+
+  pdf.addImage(imgData, 'PNG', margin, position, usableWidth, imgHeight);
+  heightLeft -= (pageHeight - margin * 2);
+
+  while(heightLeft > 0){
+    position = heightLeft - imgHeight + margin;
+    pdf.addPage();
+    pdf.addImage(imgData, 'PNG', margin, position, usableWidth, imgHeight);
+    heightLeft -= (pageHeight - margin * 2);
   }
 
-  document.getElementById('successMessage').style.display = 'block';
-  scrollToPayment();
-}
+  const datePart = new Date().toISOString().slice(0, 10);
+  const safeName = form.name.replace(/\s+/g, '-');
+  pdf.save(`contract-${safeName}-${datePart}.pdf`);
 
-function scrollToPayment(){
-  const paymentSection = document.getElementById('paymentSection');
+  paymentEnabled = true;
   const paymentBox = document.getElementById('paymentBox');
-
-  paymentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  paymentBox.classList.remove('locked');
   paymentBox.classList.add('highlight');
+  document.getElementById('copyBtn').disabled = false;
+  document.getElementById('waBtn').disabled = false;
 
-  setTimeout(() => {
-    paymentBox.classList.remove('highlight');
-  }, 2500);
+  document.getElementById('successMessage').style.display = 'block';
+  document.getElementById('paymentSection').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function confirmPayment(){
+function copyWallet(){
+  if(!paymentEnabled) return;
+  const wallet = document.getElementById('wallet').innerText.trim();
+  navigator.clipboard.writeText(wallet).then(() => {
+    alert('آدرس کیف پول کپی شد.');
+  });
+}
+
+function confirmPaymentWhatsapp(){
+  if(!paymentEnabled) return;
   const name = document.getElementById('clientName').value.trim() || 'بدون نام';
   const phone = document.getElementById('clientPhone').value.trim() || 'ثبت نشده';
-  const firstPay = document.getElementById('firstPay').innerText;
   const message =
 `سلام،
-پلن انتخابی را تأیید می‌کنم:
+قرارداد پروژه را امضا و دانلود کردم.
 
-پلن: ${selectedPlan}
+پلن انتخابی: ${selectedPlan}
 نام کارفرما: ${name}
 شماره تماس: ${phone}
-پرداخت قسط اول: ${firstPay}
+پرداخت قسط اول: ${firstPayment}
 
-رسید پرداخت را ارسال می‌کنم تا پروژه فعال شود.`;
+رسید پرداخت / Hash تراکنش را ارسال می‌کنم تا پروژه فعال شود.`;
 
   window.open('https://wa.me/905392905686?text=' + encodeURIComponent(message), '_blank');
 }
+
+initPlanData();
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+canvas.addEventListener('mousedown', startDraw);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', stopDraw);
+canvas.addEventListener('mouseleave', stopDraw);
+canvas.addEventListener('touchstart', startDraw, {passive:false});
+canvas.addEventListener('touchmove', draw, {passive:false});
+canvas.addEventListener('touchend', stopDraw);
 </script>
 </body>
 </html>
