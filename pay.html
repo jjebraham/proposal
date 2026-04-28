@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>امضا و پرداخت قسط اول</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;background:#f5f7fb;color:#111827;direction:rtl;line-height:1.8;padding:2rem 1rem 4rem}
+.wrap{max-width:760px;margin:auto}
+.header{text-align:center;margin-bottom:2rem}
+.header-top{display:flex;justify-content:flex-end;margin-bottom:.8rem}
+.back-btn{background:#e2e8f0;color:#334155;border:none;border-radius:10px;padding:8px 14px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:.2s}
+.back-btn:hover{background:#cbd5e1}
+.badge{display:inline-block;background:#dcfce7;color:#166534;border:1px solid #bbf7d0;padding:6px 16px;border-radius:999px;font-size:12px;font-weight:800;margin-bottom:1rem}
+h1{font-size:26px;color:#0f172a;margin-bottom:.5rem}
+.header p{font-size:14px;color:#64748b}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:24px;padding:1.7rem;margin-bottom:1.5rem;box-shadow:0 10px 30px rgba(15,23,42,.05)}
+.card-title{font-size:17px;font-weight:800;color:#0f172a;margin-bottom:1rem}
+.summary{background:#f0f7ff;border:1px solid #bfdbfe;border-radius:16px;padding:1rem 1.2rem;margin-bottom:1rem}
+.row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #dbeafe;padding:8px 0;font-size:13px}
+.row:last-child{border-bottom:none}
+.row strong{color:#1e3a8a}
+.notice{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:16px;padding:1rem;font-size:12.5px;margin-top:1rem}
+.input{width:100%;border:1px solid #cbd5e1;border-radius:12px;padding:12px;font-family:inherit;font-size:14px;margin-top:.4rem;margin-bottom:1rem}
+label{font-size:13px;font-weight:700;color:#334155}
+canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;background:#f8fafc;touch-action:none;margin-top:.5rem}
+.sig-actions{display:flex;gap:10px;margin-top:.8rem;flex-wrap:wrap}
+.btn-light{background:#f1f5f9;color:#334155;border:none;border-radius:10px;padding:9px 16px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.btn-submit{width:100%;background:#1d4ed8;color:#fff;border:none;border-radius:12px;padding:12px 18px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;margin-top:1rem;transition:.2s}
+.btn-submit:hover{background:#1e40af}
+.success-message{display:none;background:#ecfdf5;border:1px solid #bbf7d0;color:#166534;border-radius:12px;padding:10px 12px;font-size:12.5px;font-weight:700;margin-top:.8rem}
+.payment{background:#ecfdf5;border:1px solid #bbf7d0;border-radius:16px;padding:1.2rem;color:#14532d;transition:.25s}
+.payment.highlight{box-shadow:0 0 0 3px rgba(34,197,94,.25);border-color:#22c55e}
+.wallet{display:block;background:#dcfce7;border:1px solid #86efac;border-radius:12px;padding:10px;margin-top:.6rem;direction:ltr;text-align:left;font-size:12px;word-break:break-all;color:#052e16}
+.copy-btn{margin-top:.7rem;background:#16a34a;color:#fff;border:none;border-radius:10px;padding:9px 18px;font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer}
+.terms{font-size:12px;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:1rem}
+.terms ul{margin-right:1.2rem}
+.cta{background:linear-gradient(135deg,#0f172a,#1d4ed8);border-radius:24px;padding:1.8rem;text-align:center;color:#fff}
+.cta h2{font-size:20px;margin-bottom:.4rem}
+.cta p{font-size:13px;color:#dbeafe;margin-bottom:1.2rem}
+.btn-main{background:#fff;color:#1e3a8a;border:none;border-radius:14px;padding:14px 30px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.small{font-size:11px;color:#bfdbfe;margin-top:.8rem}
+@media(max-width:600px){.row{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-top">
+      <button class="back-btn" onclick="history.back()">← بازگشت</button>
+    </div>
+    <div class="badge">مرحله نهایی شروع پروژه</div>
+    <h1>امضا و پرداخت قسط اول</h1>
+    <p>برای فعال‌سازی پروژه، مشخصات را تأیید کنید و قسط اول را پرداخت نمایید.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 خلاصه پلن انتخابی</div>
+    <div class="summary">
+      <div class="row"><span>پلن انتخابی</span><strong id="planText">۳۰۰ دلار در ماه — ۶ ماه</strong></div>
+      <div class="row"><span>پرداخت امروز</span><strong id="firstPay">۳۰۰ USDT</strong></div>
+      <div class="row"><span>زمان تحویل نسخه عملیاتی</span><strong>پس از قسط سوم</strong></div>
+      <div class="row"><span>انتقال مالکیت کامل</span><strong>پس از تسویه نهایی</strong></div>
+    </div>
+    <div class="notice">
+      با پرداخت قسط اول، پروژه وارد مرحله اجرا می‌شود و برنامه‌ریزی طراحی، ساختار صفحات و آماده‌سازی اولیه آغاز خواهد شد.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✍️ تأیید مشخصات و امضا</div>
+
+    <label>نام و نام خانوادگی کارفرما</label>
+    <input id="clientName" class="input" placeholder="نام خود را وارد کنید">
+
+    <label>شماره تماس / واتساپ</label>
+    <input id="clientPhone" class="input" placeholder="مثلاً +90 ...">
+
+    <label>امضا با انگشت یا موس</label>
+    <canvas id="signature"></canvas>
+
+    <button class="btn-submit" onclick="validateForm()">تأیید اطلاعات و ادامه به پرداخت</button>
+    <div class="success-message" id="successMessage">اطلاعات شما ثبت شد، لطفاً پرداخت را انجام دهید</div>
+
+    <div class="sig-actions">
+      <button class="btn-light" onclick="clearSignature()">پاک کردن امضا</button>
+    </div>
+  </div>
+
+  <div class="card" id="paymentSection">
+    <div class="card-title">💳 پرداخت قسط اول</div>
+    <div class="payment" id="paymentBox">
+      <strong>USDT (BEP20):</strong>
+      <code class="wallet" id="wallet">0x02a93c138346AFc5d8F6a4B9e23b0167a8B55FD3</code>
+      <button class="copy-btn" onclick="copyWallet()">کپی آدرس کیف پول</button>
+      <p style="margin-top:.8rem;font-size:12px">
+        لطفاً بعد از پرداخت، رسید یا Hash تراکنش را از طریق واتساپ ارسال کنید.
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📌 شرایط کوتاه</div>
+    <div class="terms">
+      <ul>
+        <li>پرداخت اول به‌عنوان تأیید شروع پروژه دریافت می‌شود.</li>
+        <li>نسخه عملیاتی سایت پس از دریافت قسط سوم تحویل می‌شود.</li>
+        <li>دسترسی لازم برای استفاده و مدیریت سایت پس از تحویل نسخه عملیاتی ارائه می‌شود.</li>
+        <li>مالکیت کامل فایل‌ها، کد و دیتابیس پس از پرداخت قسط آخر منتقل می‌شود.</li>
+        <li>مبالغ پرداخت‌شده بابت خدمات انجام‌شده غیرقابل‌استرداد است.</li>
+        <li>هزینه دامنه، هاست و سرویس‌های جانبی در صورت نیاز جداگانه محاسبه می‌شود.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cta">
+    <h2>پرداخت انجام شد؟</h2>
+    <p>بعد از پرداخت قسط اول، رسید را ارسال کنید تا پروژه فعال شود.</p>
+    <button class="btn-main" onclick="confirmPayment()">ارسال تأیید پرداخت در واتساپ</button>
+    <div class="small">این پیام شامل پلن انتخابی، نام کارفرما و درخواست شروع پروژه خواهد بود.</div>
+  </div>
+
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const selectedPlan = params.get('plan') || '۳۰۰ دلار در ماه — ۶ ماه';
+
+document.getElementById('planText').innerText = selectedPlan;
+document.getElementById('firstPay').innerText = selectedPlan.includes('۲۵۰') ? '۲۵۰ USDT' : '۳۰۰ USDT';
+
+function copyWallet(){
+  const wallet = document.getElementById('wallet').innerText.trim();
+  navigator.clipboard.writeText(wallet);
+  alert('آدرس کیف پول کپی شد.');
+}
+
+const canvas = document.getElementById('signature');
+const ctx = canvas.getContext('2d');
+let drawing = false;
+
+function resizeCanvas(){
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = canvas.offsetWidth * ratio;
+  canvas.height = canvas.offsetHeight * ratio;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(ratio, ratio);
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = '#111827';
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function getPos(e){
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches ? e.touches[0] : e;
+  return {
+    x: touch.clientX - rect.left,
+    y: touch.clientY - rect.top
+  };
+}
+
+function startDraw(e){
+  drawing = true;
+  const pos = getPos(e);
+  ctx.beginPath();
+  ctx.moveTo(pos.x, pos.y);
+  e.preventDefault();
+}
+
+function draw(e){
+  if(!drawing) return;
+  const pos = getPos(e);
+  ctx.lineTo(pos.x, pos.y);
+  ctx.stroke();
+  e.preventDefault();
+}
+
+function stopDraw(){
+  drawing = false;
+}
+
+canvas.addEventListener('mousedown', startDraw);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', stopDraw);
+canvas.addEventListener('mouseleave', stopDraw);
+canvas.addEventListener('touchstart', startDraw);
+canvas.addEventListener('touchmove', draw);
+canvas.addEventListener('touchend', stopDraw);
+
+function clearSignature(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  document.getElementById('successMessage').style.display = 'none';
+}
+
+function isSignatureEmpty(){
+  const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  for(let i = 3; i < pixels.length; i += 4){
+    if(pixels[i] !== 0){
+      return false;
+    }
+  }
+  return true;
+}
+
+function validateForm(){
+  const name = document.getElementById('clientName').value.trim();
+  const phone = document.getElementById('clientPhone').value.trim();
+
+  if(!name || !phone || isSignatureEmpty()){
+    alert('لطفاً نام، شماره تماس و امضا را کامل کنید');
+    return;
+  }
+
+  document.getElementById('successMessage').style.display = 'block';
+  scrollToPayment();
+}
+
+function scrollToPayment(){
+  const paymentSection = document.getElementById('paymentSection');
+  const paymentBox = document.getElementById('paymentBox');
+
+  paymentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  paymentBox.classList.add('highlight');
+
+  setTimeout(() => {
+    paymentBox.classList.remove('highlight');
+  }, 2500);
+}
+
+function confirmPayment(){
+  const name = document.getElementById('clientName').value.trim() || 'بدون نام';
+  const phone = document.getElementById('clientPhone').value.trim() || 'ثبت نشده';
+  const firstPay = document.getElementById('firstPay').innerText;
+  const message =
+`سلام،
+پلن انتخابی را تأیید می‌کنم:
+
+پلن: ${selectedPlan}
+نام کارفرما: ${name}
+شماره تماس: ${phone}
+پرداخت قسط اول: ${firstPay}
+
+رسید پرداخت را ارسال می‌کنم تا پروژه فعال شود.`;
+
+  window.open('https://wa.me/905392905686?text=' + encodeURIComponent(message), '_blank');
+}
+</script>
+</body>
+</html>
