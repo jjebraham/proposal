@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>تأیید پلن اجرای پروژه</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;background:#f5f7fb;color:#111827;direction:rtl;line-height:1.8;padding:2rem 1rem 4rem}
+.wrap{max-width:860px;margin:auto}
+.header{text-align:center;margin-bottom:2rem}
+.badge{display:inline-block;background:#e0f2fe;color:#075985;border:1px solid #bae6fd;padding:5px 16px;border-radius:999px;font-size:12px;font-weight:800;margin-bottom:1rem}
+h1{font-size:28px;color:#0f172a;margin-bottom:.6rem}
+.header p{font-size:14px;color:#64748b;max-width:620px;margin:auto}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:24px;padding:1.8rem;margin-bottom:1.6rem;box-shadow:0 10px 30px rgba(15,23,42,.05)}
+.card-title{font-size:17px;font-weight:800;color:#0f172a;margin-bottom:.5rem}
+.card-sub{font-size:13px;color:#64748b;margin-bottom:1.2rem}
+.value-line{background:#f0f9ff;border:1px solid #bae6fd;color:#075985;border-radius:14px;padding:1rem 1.2rem;font-size:13.5px;font-weight:700;margin-bottom:1.3rem}
+.services{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.group{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:1rem}
+.group h3{font-size:13px;color:#1e40af;margin-bottom:.5rem}
+.group ul{list-style:none}
+.group li{font-size:12.5px;color:#334155;padding:4px 0;border-bottom:1px solid #edf2f7}
+.group li:last-child{border-bottom:none}
+.group li::before{content:'✓';color:#16a34a;font-weight:900;margin-left:7px}
+.outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1.2rem}
+.out{background:#ecfdf5;border:1px solid #bbf7d0;border-radius:16px;padding:1rem;text-align:center}
+.out strong{display:block;color:#166534;font-size:14px;margin-bottom:.2rem}
+.out span{font-size:11.5px;color:#4b5563}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.plan{background:#fff;border:2px solid #e2e8f0;border-radius:22px;padding:1.5rem;position:relative;cursor:pointer;transition:.2s}
+.plan:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.plan.active{border-color:#2563eb;background:#f0f7ff}
+.tag{position:absolute;top:0;left:0;background:#2563eb;color:#fff;padding:5px 14px;border-radius:0 0 14px 0;font-size:10.5px;font-weight:800}
+.plan-name{font-size:15px;font-weight:800;color:#0f172a;margin-bottom:.3rem}
+.price{font-size:34px;font-weight:800;color:#1d4ed8;margin:.3rem 0}
+.duration{font-size:13px;color:#64748b}
+.total{font-size:12px;color:#475569;margin-top:.5rem}
+.details{margin-top:1rem;padding-top:1rem;border-top:1px dashed #cbd5e1;font-size:12.5px;color:#334155}
+.details div{margin-bottom:4px}
+.note{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:16px;padding:1rem 1.2rem;font-size:12.5px;margin-top:1.2rem}
+.cta{background:linear-gradient(135deg,#0f172a,#1d4ed8);border-radius:24px;padding:1.8rem;text-align:center;color:#fff}
+.cta h2{font-size:20px;margin-bottom:.4rem}
+.cta p{font-size:13px;color:#dbeafe;margin-bottom:1.2rem}
+.btn{background:#fff;color:#1e3a8a;border:none;border-radius:14px;padding:14px 34px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.btn:hover{opacity:.9}
+.small{font-size:11px;color:#bfdbfe;margin-top:.8rem}
+@media(max-width:700px){
+.services,.plans,.outcomes{grid-template-columns:1fr}
+h1{font-size:23px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="badge">پیشنهاد نهایی قابل شروع</div>
+    <h1>شروع طراحی وب‌سایت حرفه‌ای با پرداخت مرحله‌ای</h1>
+    <p>این صفحه برای تأیید پلن استاندارد پروژه و انتخاب ساختار پرداخت ماهانه آماده شده است. هدف پروژه فقط ساخت یک سایت نیست؛ هدف تبدیل سایت به ابزار جذب مشتری و افزایش اعتماد برند شماست.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚀 خلاصه خدمات پروژه — پلن استاندارد حرفه‌ای</div>
+    <div class="card-sub">همه موارد ضروری برای راه‌اندازی یک وب‌سایت حرفه‌ای، قابل اعتماد و آماده جذب لید</div>
+
+    <div class="value-line">
+      هدف این پروژه: تبدیل سایت شما به یک ابزار جذب مشتری، نه فقط یک وب‌سایت ساده.
+    </div>
+
+    <div class="services">
+      <div class="group">
+        <h3>🌐 طراحی و تجربه کاربری</h3>
+        <ul>
+          <li>طراحی دو زبانه کامل فارسی و انگلیسی</li>
+          <li>طراحی مدرن متناسب با حوزه مهاجرت و سرمایه‌گذاری</li>
+          <li>نمایش حرفه‌ای در موبایل، تبلت و دسکتاپ</li>
+          <li>ساختار صفحات واضح برای افزایش اعتماد مشتری</li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3>⚙️ زیرساخت و فنی</h3>
+        <ul>
+          <li>پیاده‌سازی با وردپرس بهینه و قابل توسعه</li>
+          <li>تا ۱۵ صفحه خدمات، لندینگ و معرفی</li>
+          <li>SSL، تنظیمات اولیه امنیت و بکاپ</li>
+          <li>بهینه‌سازی سرعت و Core Web Vitals</li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3>📈 جذب مشتری و تبدیل لید</h3>
+        <ul>
+          <li>اتصال مستقیم به واتساپ</li>
+          <li>فرم‌های هوشمند برای دریافت اطلاعات مشتری</li>
+          <li>طراحی مسیر تبدیل بازدیدکننده به مشتری</li>
+          <li>ساختار مناسب برای Lead Generation</li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3>🔍 سئو و دیده‌شدن در گوگل</h3>
+        <ul>
+          <li>اتصال Google Search Console و Analytics</li>
+          <li>پیکربندی Yoast یا RankMath</li>
+          <li>ساختار URL، Sitemap و Schema اصولی</li>
+          <li>بلاگ تخصصی آماده انتشار محتوا</li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3>🧠 محتوا و مدیریت</h3>
+        <ul>
+          <li>۳ مقاله اولیه آماده انتشار فارسی</li>
+          <li>آموزش کامل مدیریت سایت</li>
+          <li>امکان افزودن خدمات و صفحات جدید در آینده</li>
+          <li>پنل مدیریت ساده برای تیم شما</li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3>🎁 تحویل و پشتیبانی</h3>
+        <ul>
+          <li>تحویل نسخه عملیاتی در ماه سوم</li>
+          <li>دسترسی لازم برای استفاده و مدیریت سایت</li>
+          <li>۱ ماه پشتیبانی فنی رایگان</li>
+          <li>انتقال مالکیت کامل پس از تسویه نهایی</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="outcomes">
+      <div class="out"><strong>اعتبار بیشتر</strong><span>برند حرفه‌ای‌تر در نگاه مشتری</span></div>
+      <div class="out"><strong>لید بیشتر</strong><span>مسیر واضح برای تماس و واتساپ</span></div>
+      <div class="out"><strong>رشد بلندمدت</strong><span>زیرساخت مناسب برای سئو و محتوا</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💳 انتخاب ساختار پرداخت</div>
+    <div class="card-sub">هر دو گزینه شامل همان خدمات کامل پلن استاندارد هستند. تفاوت فقط در مدت و مبلغ پرداخت است.</div>
+
+    <div class="plans">
+      <div class="plan active" onclick="selectPlan(this,'۳۰۰ دلار در ماه — ۶ ماه')">
+        <div class="tag">پیشنهادی</div>
+        <div class="plan-name">گزینه سریع‌تر و به‌صرفه‌تر</div>
+        <div class="price">۳۰۰ دلار</div>
+        <div class="duration">در ماه — به مدت ۶ ماه</div>
+        <div class="total">جمع کل: <strong>۱٬۸۰۰ دلار</strong></div>
+        <div class="details">
+          <div>✅ هزینه نهایی کمتر</div>
+          <div>✅ تسویه سریع‌تر</div>
+          <div>✅ انتقال زودتر مالکیت کامل</div>
+          <div>🚀 تحویل نسخه عملیاتی پس از قسط سوم</div>
+        </div>
+      </div>
+
+      <div class="plan" onclick="selectPlan(this,'۲۵۰ دلار در ماه — ۸ ماه')">
+        <div class="plan-name">گزینه منعطف‌تر</div>
+        <div class="price">۲۵۰ دلار</div>
+        <div class="duration">در ماه — به مدت ۸ ماه</div>
+        <div class="total">جمع کل: <strong>۲٬۰۰۰ دلار</strong></div>
+        <div class="details">
+          <div>✅ قسط ماهانه کمتر</div>
+          <div>✅ فشار مالی سبک‌تر</div>
+          <div>✅ مناسب برای بودجه ماهانه محدودتر</div>
+          <div>🚀 تحویل نسخه عملیاتی پس از قسط سوم</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      📌 با پرداخت قسط اول، پروژه وارد مرحله اجرا می‌شود. در طول پروژه امکان بررسی روند کار و ارائه بازخورد در هر مرحله وجود دارد.
+    </div>
+  </div>
+
+  <div class="cta">
+    <h2>مرحله بعد: تأیید پلن و رفتن به صفحه امضا و پرداخت</h2>
+    <p>پس از تأیید، صفحه پرداخت قسط اول و اطلاعات نهایی پروژه برای شما آماده می‌شود.</p>
+    <button class="btn" onclick="goNext()">تأیید پلن و ادامه به پرداخت</button>
+    <div class="small">پلن انتخابی فعلی: <span id="selectedText">۳۰۰ دلار در ماه — ۶ ماه</span></div>
+  </div>
+
+</div>
+
+<script>
+let selectedPlan = '۳۰۰ دلار در ماه — ۶ ماه';
+
+function selectPlan(card, plan){
+  selectedPlan = plan;
+  document.querySelectorAll('.plan').forEach(p => p.classList.remove('active'));
+  card.classList.add('active');
+  document.getElementById('selectedText').innerText = plan;
+}
+
+function goNext(){
+  const url = `pay.html?plan=${encodeURIComponent(selectedPlan)}`;
+  window.location.href = url;
+}
+</script>
+</body>
+</html>
