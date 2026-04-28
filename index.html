@@ -24,6 +24,9 @@ h1{font-size:28px;color:#0f172a;margin-bottom:.6rem}
 .group li{font-size:12.5px;color:#334155;padding:4px 0;border-bottom:1px solid #edf2f7}
 .group li:last-child{border-bottom:none}
 .group li::before{content:'✓';color:#16a34a;font-weight:900;margin-left:7px}
+.group.excluded{background:#fff7ed;border-color:#fed7aa}
+.group.excluded h3{color:#9a3412}
+.group.excluded li::before{content:'—';color:#ea580c}
 .outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1.2rem}
 .out{background:#ecfdf5;border:1px solid #bbf7d0;border-radius:16px;padding:1rem;text-align:center}
 .out strong{display:block;color:#166534;font-size:14px;margin-bottom:.2rem}
@@ -40,6 +43,13 @@ h1{font-size:28px;color:#0f172a;margin-bottom:.6rem}
 .details{margin-top:1rem;padding-top:1rem;border-top:1px dashed #cbd5e1;font-size:12.5px;color:#334155}
 .details div{margin-bottom:4px}
 .note{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:16px;padding:1rem 1.2rem;font-size:12.5px;margin-top:1.2rem}
+.maintenance-note{background:#f8fafc;border:1px solid #cbd5e1;color:#334155;border-radius:16px;padding:1rem 1.2rem;font-size:12.5px;margin-bottom:1.6rem}
+.upgrade-card{background:linear-gradient(135deg,#f8fbff,#eef5ff);border:1px solid #dbe7ff;border-radius:24px;padding:1.8rem;margin-bottom:1.6rem;box-shadow:0 10px 30px rgba(15,23,42,.04)}
+.upgrade-title{font-size:17px;font-weight:800;color:#0f172a;margin-bottom:.5rem}
+.upgrade-desc{font-size:13px;color:#64748b;margin-bottom:1.2rem}
+.upgrade-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.2rem}
+.upgrade-item{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:.85rem 1rem;font-size:12.5px;color:#334155}
+.upgrade-tip{background:#fff;border:1px dashed #93c5fd;color:#1e40af;border-radius:14px;padding:1rem;font-size:12.5px;text-align:center;font-weight:700}
 .cta{background:linear-gradient(135deg,#0f172a,#1d4ed8);border-radius:24px;padding:1.8rem;text-align:center;color:#fff}
 .cta h2{font-size:20px;margin-bottom:.4rem}
 .cta p{font-size:13px;color:#dbeafe;margin-bottom:1.2rem}
@@ -47,7 +57,7 @@ h1{font-size:28px;color:#0f172a;margin-bottom:.6rem}
 .btn:hover{opacity:.9}
 .small{font-size:11px;color:#bfdbfe;margin-top:.8rem}
 @media(max-width:700px){
-.services,.plans,.outcomes{grid-template-columns:1fr}
+.services,.plans,.outcomes,.upgrade-grid{grid-template-columns:1fr}
 h1{font-size:23px}
 }
 </style>
@@ -114,9 +124,9 @@ h1{font-size:23px}
         <h3>🧠 محتوا و مدیریت</h3>
         <ul>
           <li>۳ مقاله اولیه آماده انتشار فارسی</li>
-          <li>آموزش کامل مدیریت سایت</li>
+          <li>امکان افزودن مقالات نامحدود توسط شما</li>
           <li>امکان افزودن خدمات و صفحات جدید در آینده</li>
-          <li>پنل مدیریت ساده برای تیم شما</li>
+          <li>آموزش کامل مدیریت سایت و پنل کاربری</li>
         </ul>
       </div>
 
@@ -136,6 +146,72 @@ h1{font-size:23px}
       <div class="out"><strong>لید بیشتر</strong><span>مسیر واضح برای تماس و واتساپ</span></div>
       <div class="out"><strong>رشد بلندمدت</strong><span>زیرساخت مناسب برای سئو و محتوا</span></div>
     </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📦 محدوده دقیق تحویل پروژه</div>
+    <div class="card-sub">
+      برای جلوگیری از هرگونه ابهام، خروجی دقیق این پلن به‌صورت شفاف مشخص شده است.
+    </div>
+
+    <div class="value-line">
+      💡 این پلن نسخه استاندارد و پایه حرفه‌ای است. نسخه پیشرفته شامل سئو مداوم، AI، سیستم کامل املاک و اتوماسیون فروش به‌صورت جداگانه قابل اجرا است.
+    </div>
+
+    <div class="services">
+      <div class="group">
+        <h3>✅ آنچه در این پلن دریافت می‌کنید</h3>
+        <ul>
+          <li>طراحی کامل وب‌سایت دو زبانه فارسی و انگلیسی</li>
+          <li>ایجاد حداکثر ۱۵ صفحه شامل خدمات، درباره ما، تماس و لندینگ‌ها</li>
+          <li>راه‌اندازی بلاگ برای انتشار مقالات</li>
+          <li>۳ مقاله اولیه برای شروع محتوا</li>
+          <li>اتصال فرم‌ها و واتساپ برای دریافت لید</li>
+          <li>ساختار پایه سئو و تنظیمات فنی اولیه</li>
+          <li>پنل مدیریت برای افزودن محتوا و صفحات توسط شما</li>
+          <li>آموزش مدیریت سایت پس از تحویل</li>
+        </ul>
+      </div>
+
+      <div class="group excluded">
+        <h3>❌ مواردی که در این پلن شامل نمی‌شود</h3>
+        <ul>
+          <li>تولید مداوم مقاله یا مدیریت ماهانه بلاگ</li>
+          <li>سئو پیشرفته، گزارش ماهانه و تضمین رتبه در گوگل</li>
+          <li>سیستم حرفه‌ای مدیریت املاک با فیلتر پیشرفته</li>
+          <li>ثبت و مدیریت آگهی فروش یا اجاره املاک به‌صورت پیشرفته</li>
+          <li>تولید خودکار محتوا با AI</li>
+          <li>CRM و اتوماسیون کامل فروش و پیگیری لیدها</li>
+          <li>مدیریت تبلیغات، کمپین مارکتینگ یا تولید محتوای مداوم</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      📌 این پلن برای راه‌اندازی سریع و حرفه‌ای سایت طراحی شده است. برای تبدیل سایت به یک سیستم کامل فروش، سئو و مدیریت املاک، امکان ارتقا در هر زمان وجود دارد.
+    </div>
+  </div>
+
+  <div class="upgrade-card">
+    <div class="upgrade-title">🚀 امکان ارتقا در هر زمان</div>
+    <p class="upgrade-desc">
+      پس از راه‌اندازی سایت، در هر زمان می‌توانید امکانات پیشرفته‌تری به سیستم خود اضافه کنید و آن را متناسب با رشد کسب‌وکار خود توسعه دهید.
+    </p>
+
+    <div class="upgrade-grid">
+      <div class="upgrade-item">🔹 سیستم کامل مدیریت املاک، فیلتر، دسته‌بندی و ثبت آگهی</div>
+      <div class="upgrade-item">🔹 تولید محتوای خودکار با AI</div>
+      <div class="upgrade-item">🔹 سئو پیشرفته، گزارش ماهانه و رشد ارگانیک</div>
+      <div class="upgrade-item">🔹 اتصال به CRM و اتوماسیون لیدها</div>
+    </div>
+
+    <div class="upgrade-tip">
+      💡 پیشنهاد: ابتدا نسخه پایه را راه‌اندازی کنید، سپس بر اساس نیاز واقعی کسب‌وکار توسعه دهید.
+    </div>
+  </div>
+
+  <div class="maintenance-note">
+    🛡 پس از تحویل سایت، هیچ هزینه ماهانه اجباری وجود ندارد. در صورت تمایل، پلن نگهداری اختیاری برای امنیت، بکاپ، آپدیت‌ها و رشد سئو قابل ارائه است.
   </div>
 
   <div class="card">
