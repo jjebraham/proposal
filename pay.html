@@ -47,6 +47,7 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 </head>
 <body>
 <div class="wrap">
+  <img id="contractorSignatureImg" src="signature-amir-kiani.svg" alt="Contractor Signature" style="display:none">
 
   <div class="header">
     <div class="header-top">
@@ -125,6 +126,7 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script>
 const params = new URLSearchParams(window.location.search);
 const selectedPlan = params.get('plan') || '۳۰۰ دلار در ماه — ۶ ماه';
@@ -232,7 +234,77 @@ function scrollToPayment(){
   }, 2500);
 }
 
-function confirmPayment(){
+function loadImageAsDataURL(url){
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.crossOrigin = 'anonymous';
+    image.onload = () => {
+      try {
+        const temp = document.createElement('canvas');
+        temp.width = image.naturalWidth || 400;
+        temp.height = image.naturalHeight || 120;
+        const tctx = temp.getContext('2d');
+        tctx.drawImage(image, 0, 0);
+        resolve(temp.toDataURL('image/png'));
+      } catch (_e) {
+        resolve(null);
+      }
+    };
+    image.onerror = () => resolve(null);
+    image.src = url;
+  });
+}
+
+async function generateContractPdfBlob(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const name = document.getElementById('clientName').value.trim() || 'بدون نام';
+  const phone = document.getElementById('clientPhone').value.trim() || 'ثبت نشده';
+  const firstPay = document.getElementById('firstPay').innerText;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(12);
+  doc.text('Project Start Confirmation', 40, 50);
+  doc.text(`Plan: ${selectedPlan}`, 40, 80);
+  doc.text(`Client name: ${name}`, 40, 105);
+  doc.text(`Client phone: ${phone}`, 40, 130);
+  doc.text(`First payment: ${firstPay}`, 40, 155);
+
+  const signatureImg = document.getElementById('contractorSignatureImg');
+  const signatureData = await loadImageAsDataURL(signatureImg.getAttribute('src'));
+
+  if (signatureData) {
+    doc.text('Contractor signature:', 40, 200);
+    doc.addImage(signatureData, 'PNG', 40, 210, 180, 60);
+  } else {
+    doc.text('Contractor signature: Kiani Development', 40, 210);
+  }
+
+  return doc.output('blob');
+}
+
+async function saveSignedContract(){
+  try {
+    const pdfBlob = await generateContractPdfBlob();
+    const formData = new FormData();
+    formData.append('contract', pdfBlob, 'signed-contract.pdf');
+
+    const response = await fetch('save_contract.php', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error('Save failed');
+    }
+  } catch (e) {
+    console.warn('Contract save skipped:', e);
+  }
+}
+
+async function confirmPayment(){
+  await saveSignedContract();
+
   const name = document.getElementById('clientName').value.trim() || 'بدون نام';
   const phone = document.getElementById('clientPhone').value.trim() || 'ثبت نشده';
   const firstPay = document.getElementById('firstPay').innerText;

@@ -1,0 +1,9 @@
+signed-contracts/*
+!signed-contracts/.gitkeep
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+.DS_Store
