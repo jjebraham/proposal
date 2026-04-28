@@ -240,29 +240,44 @@ function populateContract(){
   document.getElementById('clientSignaturePreview').src = canvas.toDataURL('image/png');
 }
 
-async function savePdfToServer(pdfBase64, name, phone){
-  const payload = {
-    pdfBase64,
-    clientName: name,
-    clientPhone: phone,
-    selectedPlan,
-    firstPayment,
-    persianDate
-  };
+async function savePdfToServer(pdfBlob, name, phone){
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(pdfBlob);
+    reader.onloadend = async function () {
+      const base64data = reader.result;
+      console.log('Sending contract to server...');
 
-  try {
-    const response = await fetch('save_contract.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+      try {
+        const response = await fetch('save_contract.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            pdfBase64: base64data,
+            clientName: name,
+            clientPhone: phone,
+            selectedPlan: selectedPlan,
+            firstPayment: firstPayment,
+            persianDate: persianDate
+          })
+        });
 
-    if (!response.ok) {
-      console.warn('Saving contract on server failed.');
-    }
-  } catch (err) {
-    console.warn('Saving contract on server skipped:', err);
-  }
+        if (!response.ok) {
+          resolve(false);
+          return;
+        }
+
+        resolve(true);
+      } catch (_error) {
+        resolve(false);
+      }
+    };
+    reader.onerror = function () {
+      resolve(false);
+    };
+  });
 }
 
 async function generateSignedPdf(){
@@ -311,10 +326,22 @@ async function generateSignedPdf(){
   const fileName = `signed-contract-${Date.now()}.pdf`;
   pdf.save(fileName);
 
-  const pdfBase64 = pdf.output('datauristring').split(',')[1];
-  await savePdfToServer(pdfBase64, name, phone);
+  const pdfBlob = pdf.output('blob');
+  const savedOnServer = await savePdfToServer(pdfBlob, name, phone);
 
-  document.getElementById('successMessage').style.display = 'block';
+  const successMessage = document.getElementById('successMessage');
+  successMessage.style.display = 'block';
+  if (savedOnServer) {
+    successMessage.style.background = '#ecfdf5';
+    successMessage.style.borderColor = '#bbf7d0';
+    successMessage.style.color = '#166534';
+    successMessage.textContent = 'قرارداد با موفقیت تولید، دانلود و روی سرور ذخیره شد. اکنون بخش پرداخت فعال است.';
+  } else {
+    successMessage.style.background = '#fff7ed';
+    successMessage.style.borderColor = '#fed7aa';
+    successMessage.style.color = '#9a3412';
+    successMessage.textContent = 'قرارداد دانلود شد، اما ذخیره روی سرور انجام نشد. لطفاً دوباره تلاش کنید.';
+  }
   const paymentBox = document.getElementById('paymentBox');
   paymentBox.classList.remove('locked');
   paymentBox.classList.add('highlight');
