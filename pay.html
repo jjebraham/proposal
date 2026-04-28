@@ -40,17 +40,9 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 .copy-btn:disabled,.btn-main:disabled{opacity:.5;cursor:not-allowed}
 .terms{font-size:12px;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:1rem}
 .terms ul{margin-right:1.2rem}
-.contract{background:#ffffff;border:1px solid #dbeafe;border-radius:16px;padding:1.1rem}
-.contract h3{font-size:18px;color:#0f172a;margin-bottom:.8rem}
-.contract p{font-size:13px;color:#1e293b;margin-bottom:.6rem}
-.contract .key{font-weight:800;color:#0f172a}
-.sign-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.6rem}
-.sign-box{border:1px dashed #94a3b8;border-radius:12px;padding:.8rem;min-height:100px;background:#f8fafc}
-.sign-title{font-size:12px;font-weight:800;color:#334155;margin-bottom:.5rem}
-.contractor-sign{font-family:cursive;font-size:19px;color:#0f172a;transform:rotate(-3deg);display:inline-block}
-.client-signature-preview{max-width:100%;height:64px;object-fit:contain;display:none}
+.client-signature-preview{max-width:140px;height:60px;object-fit:contain;display:none;margin:5px auto}
 .payment-note{margin-top:.8rem;font-size:12px}
-@media(max-width:600px){.row{flex-direction:column}.sign-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.row{flex-direction:column}}
 </style>
 </head>
 <body>
@@ -81,11 +73,11 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
   <div class="card">
     <div class="card-title">✍️ اطلاعات کارفرما و امضا</div>
 
-    <label for="clientName">نام و نام خانوادگی کارفرما</label>
-    <input id="clientName" class="input" placeholder="نام خود را وارد کنید"/>
+    <label for="clientNameInput">نام و نام خانوادگی کارفرما</label>
+    <input id="clientNameInput" class="input" placeholder="نام خود را وارد کنید"/>
 
-    <label for="clientPhone">شماره تماس / واتساپ</label>
-    <input id="clientPhone" class="input" placeholder="مثلاً +90 ..."/>
+    <label for="clientPhoneInput">شماره تماس / واتساپ</label>
+    <input id="clientPhoneInput" class="input" placeholder="مثلاً +90 ..."/>
 
     <label>امضا با انگشت یا موس</label>
     <canvas id="signature"></canvas>
@@ -100,28 +92,54 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 
   <div class="card">
     <div class="card-title">📄 پیش‌نمایش قرارداد</div>
-    <div class="contract" id="contractToPdf">
-      <h3>قرارداد اجرای پروژه وب‌سایت</h3>
-      <p><span class="key">مجری:</span> [Your Name / Brand]</p>
-      <p><span class="key">کارفرما:</span> <span id="contractClientName">....................</span></p>
-      <p><span class="key">موضوع:</span> طراحی و اجرای وب‌سایت پلن استاندارد مطابق توضیحات صفحه قبل.</p>
-      <p><span class="key">پرداخت:</span> پلن انتخابی <span id="contractPlanText">۳۰۰ دلار در ماه — ۶ ماه</span> و مبلغ قسط اول <span id="contractFirstPay">۳۰۰ USDT</span>.</p>
-      <p><span class="key">تحویل:</span> نسخه عملیاتی سایت پس از دریافت قسط سوم تحویل می‌شود.</p>
-      <p><span class="key">مالکیت:</span> دسترسی لازم برای استفاده و مدیریت سایت پس از تحویل نسخه عملیاتی ارائه می‌شود؛ مالکیت کامل فایل‌ها، کد و دیتابیس پس از پرداخت قسط آخر منتقل می‌شود.</p>
-      <p><span class="key">خارج از محدوده:</span> تولید مداوم محتوا، سئو ماهانه، سیستم کامل مدیریت املاک، AI، CRM و اتوماسیون فروش در این پلن شامل نمی‌شود و به‌صورت ارتقا قابل اجرا است.</p>
-      <p><span class="key">تأیید:</span> با امضای این صفحه، کارفرما تأیید می‌کند که محدوده خدمات، شرایط پرداخت و زمان‌بندی تحویل را مطالعه و قبول کرده است.</p>
-      <p><span class="key">تاریخ:</span> <span id="contractDate"></span></p>
 
-      <div class="sign-grid">
-        <div class="sign-box">
-          <div class="sign-title">امضای مجری</div>
-          <p>[Your Name / Brand]</p>
-          <div class="contractor-sign">Approved by [Your Name]</div>
+    <div id="contract" style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px;line-height:2;font-size:13px;color:#111827">
+      <h2 style="text-align:center;font-size:16px;margin-bottom:10px">قرارداد اجرای پروژه وب‌سایت</h2>
+
+      <p><strong>مجری:</strong> Amir Kiani</p>
+      <p><strong>کارفرما:</strong> <span id="clientName">....................</span></p>
+
+      <p><strong>موضوع:</strong> طراحی و اجرای وب‌سایت پلن استاندارد مطابق توضیحات صفحه قبل.</p>
+
+      <p><strong>پرداخت:</strong>
+        <span id="selectedPlanText">۳۰۰ دلار در ماه — ۶ ماه</span>
+        و مبلغ قسط اول
+        <strong id="contractFirstPay">۳۰۰ USDT</strong>.
+      </p>
+
+      <p><strong>تحویل:</strong> نسخه عملیاتی سایت پس از دریافت قسط سوم تحویل می‌شود.</p>
+
+      <p><strong>مالکیت:</strong>
+        دسترسی لازم برای استفاده و مدیریت سایت پس از تحویل نسخه عملیاتی ارائه می‌شود؛
+        مالکیت کامل فایل‌ها، کد و دیتابیس پس از پرداخت قسط آخر منتقل می‌شود.
+      </p>
+
+      <p><strong>خارج از محدوده:</strong>
+        تولید مداوم محتوا، سئو ماهانه، سیستم کامل مدیریت املاک، AI، CRM و اتوماسیون فروش
+        در این پلن شامل نمی‌شود و به‌صورت ارتقا قابل اجرا است.
+      </p>
+
+      <p><strong>تأیید:</strong>
+        با امضای این صفحه، کارفرما تأیید می‌کند که محدوده خدمات، شرایط پرداخت و زمان‌بندی تحویل را مطالعه و قبول کرده است.
+      </p>
+
+      <p><strong>تاریخ:</strong> ۱۴۰۵/۲/۸</p>
+
+      <br>
+
+      <div style="display:flex;justify-content:space-between;margin-top:30px;gap:10px;flex-wrap:wrap">
+        <div style="text-align:center;min-width:180px;flex:1">
+          <div style="border-top:1px solid #999;width:140px;margin:30px auto 5px"></div>
+          <p>امضای مجری</p>
+          <p><strong>Amir Kiani</strong></p>
+          <p style="font-size:11px;color:#555">Approved by Kiani Development</p>
         </div>
-        <div class="sign-box">
-          <div class="sign-title">امضای کارفرما</div>
-          <img id="clientSignPreview" class="client-signature-preview" alt="امضای کارفرما"/>
-          <p id="contractClientPhone">شماره تماس: ....................</p>
+
+        <div style="text-align:center;min-width:180px;flex:1">
+          <div style="border-top:1px solid #999;width:140px;margin:30px auto 5px"></div>
+          <p>امضای کارفرما</p>
+          <img id="clientSignaturePreview" class="client-signature-preview" alt="امضای کارفرما"/>
+          <p id="clientPhone">شماره تماس: ....................</p>
         </div>
       </div>
     </div>
@@ -173,13 +191,22 @@ function getFirstPayment(plan){
   return plan.includes('۲۵۰') ? '۲۵۰ USDT' : '۳۰۰ USDT';
 }
 
-function initPlanData(){
-  document.getElementById('planText').innerText = selectedPlan;
-  document.getElementById('firstPay').innerText = firstPayment;
-  document.getElementById('payAmount').innerText = firstPayment;
-  document.getElementById('contractPlanText').innerText = selectedPlan;
-  document.getElementById('contractFirstPay').innerText = firstPayment;
-  document.getElementById('contractDate').innerText = new Date().toLocaleDateString('fa-IR');
+function isSignatureEmpty(){
+  const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  for(let i = 3; i < pixels.length; i += 4){
+    if(pixels[i] !== 0) return false;
+  }
+  return true;
+}
+
+function validateForm(){
+  const name = document.getElementById('clientNameInput').value.trim();
+  const phone = document.getElementById('clientPhoneInput').value.trim();
+  if(!name || !phone || isSignatureEmpty()){
+    alert('لطفاً نام، شماره تماس و امضا را کامل کنید');
+    return null;
+  }
+  return {name, phone};
 }
 
 function resizeCanvas(){
@@ -196,7 +223,7 @@ function resizeCanvas(){
 function getPos(e){
   const rect = canvas.getBoundingClientRect();
   const touch = e.touches ? e.touches[0] : e;
-  return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+  return {x: touch.clientX - rect.left, y: touch.clientY - rect.top};
 }
 
 function startDraw(e){
@@ -221,46 +248,24 @@ function stopDraw(){
 
 function clearSignature(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  document.getElementById('clientSignPreview').style.display = 'none';
+  document.getElementById('clientSignaturePreview').style.display = 'none';
   document.getElementById('successMessage').style.display = 'none';
-}
-
-function isSignatureEmpty(){
-  const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-  for(let i = 3; i < pixels.length; i += 4){
-    if(pixels[i] !== 0) return false;
-  }
-  return true;
-}
-
-function validateForm(){
-  const name = document.getElementById('clientName').value.trim();
-  const phone = document.getElementById('clientPhone').value.trim();
-  if(!name || !phone || isSignatureEmpty()){
-    alert('لطفاً نام، شماره تماس و امضا را کامل کنید');
-    return null;
-  }
-  return {name, phone};
 }
 
 async function generateSignedPdf(){
   const form = validateForm();
   if(!form) return;
 
-  document.getElementById('contractClientName').innerText = form.name;
-  document.getElementById('contractClientPhone').innerText = 'شماره تماس: ' + form.phone;
+  document.getElementById('clientName').innerText = form.name;
+  document.getElementById('clientPhone').innerText = 'شماره تماس: ' + form.phone;
 
-  const signImg = canvas.toDataURL('image/png');
-  const signPreview = document.getElementById('clientSignPreview');
-  signPreview.src = signImg;
+  const signData = canvas.toDataURL('image/png');
+  const signPreview = document.getElementById('clientSignaturePreview');
+  signPreview.src = signData;
   signPreview.style.display = 'block';
 
-  const contract = document.getElementById('contractToPdf');
-  const rendered = await html2canvas(contract, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: '#ffffff'
-  });
+  const target = document.getElementById('contract');
+  const rendered = await html2canvas(target, {scale: 2, useCORS: true, backgroundColor: '#ffffff'});
 
   const imgData = rendered.toDataURL('image/png');
   const { jsPDF } = window.jspdf;
@@ -268,7 +273,7 @@ async function generateSignedPdf(){
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
   const margin = 10;
-  const usableWidth = pageWidth - (margin * 2);
+  const usableWidth = pageWidth - margin * 2;
   const imgHeight = (rendered.height * usableWidth) / rendered.width;
 
   let heightLeft = imgHeight;
@@ -289,14 +294,14 @@ async function generateSignedPdf(){
   pdf.save(`contract-${safeName}-${datePart}.pdf`);
 
   paymentEnabled = true;
-  const paymentBox = document.getElementById('paymentBox');
-  paymentBox.classList.remove('locked');
-  paymentBox.classList.add('highlight');
+  document.getElementById('successMessage').style.display = 'block';
   document.getElementById('copyBtn').disabled = false;
   document.getElementById('waBtn').disabled = false;
 
-  document.getElementById('successMessage').style.display = 'block';
-  document.getElementById('paymentSection').scrollIntoView({behavior:'smooth', block:'start'});
+  const paymentBox = document.getElementById('paymentBox');
+  paymentBox.classList.remove('locked');
+  paymentBox.classList.add('highlight');
+  document.getElementById('paymentSection').scrollIntoView({behavior: 'smooth', block: 'start'});
 }
 
 function copyWallet(){
@@ -309,15 +314,15 @@ function copyWallet(){
 
 function confirmPaymentWhatsapp(){
   if(!paymentEnabled) return;
-  const name = document.getElementById('clientName').value.trim() || 'بدون نام';
-  const phone = document.getElementById('clientPhone').value.trim() || 'ثبت نشده';
-  const message =
-`سلام،
+  const clientName = document.getElementById('clientNameInput').value.trim() || 'بدون نام';
+  const clientPhone = document.getElementById('clientPhoneInput').value.trim() || 'ثبت نشده';
+
+  const message = `سلام،
 قرارداد پروژه را امضا و دانلود کردم.
 
 پلن انتخابی: ${selectedPlan}
-نام کارفرما: ${name}
-شماره تماس: ${phone}
+نام کارفرما: ${clientName}
+شماره تماس: ${clientPhone}
 پرداخت قسط اول: ${firstPayment}
 
 رسید پرداخت / Hash تراکنش را ارسال می‌کنم تا پروژه فعال شود.`;
@@ -325,10 +330,17 @@ function confirmPaymentWhatsapp(){
   window.open('https://wa.me/905392905686?text=' + encodeURIComponent(message), '_blank');
 }
 
-initPlanData();
+function initData(){
+  document.getElementById('planText').innerText = selectedPlan;
+  document.getElementById('firstPay').innerText = firstPayment;
+  document.getElementById('selectedPlanText').innerText = selectedPlan;
+  document.getElementById('contractFirstPay').innerText = firstPayment;
+  document.getElementById('payAmount').innerText = firstPayment;
+}
+
+initData();
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
-
 canvas.addEventListener('mousedown', startDraw);
 canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', stopDraw);
