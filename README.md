@@ -2,13 +2,15 @@
 
 ## Runtime contract storage
 
-- Signed contract PDFs are saved by `save_contract.php` at runtime.
-- Saved files are written to `signed-contracts/` on the server.
-- The repository keeps only `signed-contracts/.gitkeep` to preserve the directory.
-- Generated files (`*.pdf`, images, and uploaded assets) are ignored by git.
+- `pay.html` generates the signed PDF in the browser and downloads it locally for the client.
+- After generation, `pay.html` sends JSON payload (`pdfBase64` + contract fields) to `save_contract.php`.
+- `save_contract.php` saves two runtime files in `signed-contracts/`:
+  - `<base>.pdf`
+  - `<base>.json` metadata (client/plan/payment/date)
+- Git keeps only `signed-contracts/.gitkeep`; all runtime generated files stay untracked.
 
 ## Contractor signature asset
 
-- `pay.html` references `signature-amir-kiani.svg` as an external file beside `pay.html`.
+- `pay.html` references external `signature-amir-kiani.svg` beside `pay.html`.
 - Do not commit signature files to this repository.
-- If the signature file is missing, PDF generation falls back to the text `Kiani Development`.
+- If the SVG is missing, PDF generation still works and falls back to `Kiani Development` text.
