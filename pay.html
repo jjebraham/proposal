@@ -14,6 +14,9 @@ body{font-family:'Vazirmatn',Tahoma,sans-serif;background:#f5f7fb;color:#111827;
 .row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #dbeafe;padding:8px 0;font-size:13px}
 .row:last-child{border-bottom:none}
 .input{width:100%;border:1px solid #cbd5e1;border-radius:12px;padding:12px;font-family:inherit;font-size:14px;margin-top:.4rem;margin-bottom:1rem}
+.phone-row{display:flex;gap:8px;align-items:center;direction:ltr}
+.phone-code{max-width:110px;text-align:left}
+.phone-number{flex:1;text-align:left;direction:ltr}
 label{font-size:13px;font-weight:700;color:#334155}
 canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;background:#f8fafc;touch-action:none;margin-top:.5rem}
 .btn-submit{width:100%;background:#1d4ed8;color:#fff;border:none;border-radius:12px;padding:12px 18px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;margin-top:.6rem}
@@ -32,12 +35,22 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 .contract-preview h4{margin-top:.9rem;margin-bottom:.4rem;font-size:14px;color:#0f172a}
 .contract-preview ul{margin:0.4rem 1.2rem 0.6rem 0;padding:0;list-style-position:outside}
 .contract-preview li{display:list-item;line-height:2;text-align:right}
+.contract-preview.pdf-compact{padding:.75rem;font-size:10.2px;line-height:1.45}
+.contract-preview.pdf-compact h3{font-size:13px;margin-bottom:.3rem}
+.contract-preview.pdf-compact h4{font-size:10.8px;margin-top:.38rem;margin-bottom:.2rem}
+.contract-preview.pdf-compact p{margin-bottom:.14rem}
+.contract-preview.pdf-compact ul{margin:.12rem .85rem .2rem 0}
+.contract-preview.pdf-compact li{line-height:1.35;margin-bottom:.05rem}
+.contract-preview.pdf-compact .signature-row{margin-top:.45rem;gap:8px;align-items:flex-end;flex-wrap:nowrap}
+.contract-preview.pdf-compact .sig-box{min-width:0;width:49%;padding-top:.35rem}
+.contract-preview.pdf-compact #contractorSignatureBlock img,
+.contract-preview.pdf-compact #clientSignaturePreview{max-height:44px;max-width:130px}
 .signature-row{display:flex;justify-content:space-between;gap:12px;margin-top:1rem;align-items:flex-end;flex-wrap:wrap}
 .sig-box{border-top:1px dashed #94a3b8;padding-top:.6rem;min-width:240px}
 #contractorSignatureBlock img{max-height:64px;max-width:180px;display:block}
 .fallback-sign{font-weight:700;color:#334155;display:none}
 .small-note{font-size:11px;color:#64748b;margin-top:.3rem}
-@media(max-width:650px){.row{flex-direction:column}.sig-box{min-width:100%}}
+@media(max-width:650px){.row{flex-direction:column}.sig-box{min-width:100%}.phone-row{flex-direction:column;direction:rtl}.phone-code,.phone-number{max-width:100%;width:100%}}
 </style>
 </head>
 <body>
@@ -57,7 +70,12 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
     <input id="clientName" class="input" placeholder="نام خود را وارد کنید">
 
     <label>شماره تماس / واتساپ</label>
-    <input id="clientPhone" class="input" placeholder="مثلاً +90 ...">
+    <div class="phone-row">
+      <select id="countryCode" class="input phone-code">
+        <option value="+90" selected>+90</option>
+      </select>
+      <input id="clientPhone" class="input phone-number" type="tel" inputmode="numeric" maxlength="10" placeholder="مثال 5392909090" dir="ltr">
+    </div>
 
     <label>امضا با انگشت یا موس</label>
     <canvas id="signature"></canvas>
@@ -136,9 +154,9 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
           <img id="clientSignaturePreview" alt="Client Signature" style="display:block;max-height:64px;max-width:180px;margin-top:.5rem">
         </div>
         <div class="sig-box" id="contractorSignatureBlock">
-          <img id="contractorSignatureImg" src="signature-amir-kiani.png" alt="Contractor Signature" style="margin-top:.5rem">
           <div style="margin-top:.4rem">امضای مجری</div>
           <div>Amir Kiani</div>
+          <img id="contractorSignatureImg" src="signature-amir-kiani.png" alt="Contractor Signature" style="margin-top:.5rem">
           <div id="contractorFallback" class="fallback-sign">Kiani Development</div>
         </div>
       </div>
@@ -240,8 +258,8 @@ function copyWallet(){
 }
 
 function populateContract(){
-  const name = document.getElementById('clientName').value.trim();
-  const phone = document.getElementById('clientPhone').value.trim();
+  const name = getValidatedName();
+  const phone = getFullPhone();
 
   document.getElementById('contractClientName').innerText = name;
   document.getElementById('contractClientPhone').innerText = phone;
@@ -250,6 +268,28 @@ function populateContract(){
   document.getElementById('contractDate').innerText = persianDate;
   document.getElementById('clientSignaturePreview').src = canvas.toDataURL('image/png');
 }
+
+function getValidatedName(){
+  return document.getElementById('clientName').value.trim();
+}
+
+function getFullPhone(){
+  const countryCode = document.getElementById('countryCode').value;
+  const phoneNumber = document.getElementById('clientPhone').value.trim();
+  return `${countryCode}${phoneNumber}`;
+}
+
+function isValidName(name){
+  return /^[A-Za-z]+(?: [A-Za-z]+)+$/.test(name);
+}
+
+function isValidPhone(phone){
+  return /^\d{10}$/.test(phone);
+}
+
+document.getElementById('clientPhone').addEventListener('input', (e) => {
+  e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+});
 
 async function savePdfToServer(blob, name, phone){
   console.log('🔥 Uploading contract as Blob/FormData...');
@@ -293,11 +333,22 @@ function enablePayment(){
 }
 
 async function generateSignedPdf(){
-  const name = document.getElementById('clientName').value.trim();
-  const phone = document.getElementById('clientPhone').value.trim();
+  const name = getValidatedName();
+  const phoneRaw = document.getElementById('clientPhone').value.trim();
+  const phone = getFullPhone();
 
-  if(!name || !phone || isSignatureEmpty()){
-    alert('لطفاً نام، شماره تماس و امضا را کامل کنید');
+  if (!isValidName(name)) {
+    alert('لطفاً نام و نام خانوادگی را فقط با حروف انگلیسی وارد کنید، مانند Amir Kiani');
+    return;
+  }
+
+  if (!isValidPhone(phoneRaw)) {
+    alert('لطفاً شماره واتساپ را به‌صورت ۱۰ رقم وارد کنید، مانند 5392909090');
+    return;
+  }
+
+  if(isSignatureEmpty()){
+    alert('لطفاً امضا را کامل کنید');
     return;
   }
 
@@ -317,13 +368,15 @@ async function generateSignedPdf(){
     }
 
     const contractElement = document.getElementById('contractPreview');
+    contractElement.classList.add('pdf-compact');
     const canvasImage = await html2canvas(contractElement, {
-      scale: 1.2,
+      scale: 1.05,
       useCORS: true,
       backgroundColor: '#ffffff'
     });
+    contractElement.classList.remove('pdf-compact');
 
-    const imgData = canvasImage.toDataURL('image/jpeg', 0.82);
+    const imgData = canvasImage.toDataURL('image/jpeg', 0.78);
 
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p', 'mm', 'a4');
@@ -333,18 +386,9 @@ async function generateSignedPdf(){
     const imgWidth = pdfWidth - (margin * 2);
     const imgHeight = (canvasImage.height * imgWidth) / canvasImage.width;
 
-    let heightLeft = imgHeight;
-    let position = margin;
-
-    pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
-    heightLeft -= (pdfHeight - margin * 2);
-
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight + margin;
-      pdf.addPage();
-      pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
-      heightLeft -= (pdfHeight - margin * 2);
-    }
+    const maxHeight = pdfHeight - (margin * 2);
+    const finalHeight = Math.min(imgHeight, maxHeight);
+    pdf.addImage(imgData, 'JPEG', margin, margin, imgWidth, finalHeight);
 
     const blob = pdf.output('blob');
 
@@ -374,8 +418,8 @@ async function generateSignedPdf(){
 }
 
 function confirmPayment(){
-  const name = document.getElementById('clientName').value.trim() || 'بدون نام';
-  const phone = document.getElementById('clientPhone').value.trim() || 'ثبت نشده';
+  const name = getValidatedName() || 'بدون نام';
+  const phone = getFullPhone() || 'ثبت نشده';
 
   const contractLine = savedContractFilename ? `\nکد/فایل قرارداد: ${savedContractFilename}` : '';
 
