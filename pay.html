@@ -151,12 +151,13 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
       <div class="signature-row">
         <div class="sig-box">
           <strong>امضای کارفرما</strong>
+          <div id="contractClientSignatureName" style="margin-top:.4rem">-</div>
           <img id="clientSignaturePreview" alt="Client Signature" style="display:block;max-height:64px;max-width:180px;margin-top:.5rem">
         </div>
         <div class="sig-box" id="contractorSignatureBlock">
           <div style="margin-top:.4rem">امضای مجری</div>
           <div>Amir Kiani</div>
-          <img id="contractorSignatureImg" src="signature-amir-kiani.png" alt="Contractor Signature" style="margin-top:.5rem">
+          <img id="contractorSignatureImg" src="signature-amir-kiani.png?v=2" alt="Contractor Signature" style="margin-top:.5rem">
           <div id="contractorFallback" class="fallback-sign">Kiani Development</div>
         </div>
       </div>
@@ -263,6 +264,7 @@ function populateContract(){
 
   document.getElementById('contractClientName').innerText = name;
   document.getElementById('contractClientPhone').innerText = phone;
+  document.getElementById('contractClientSignatureName').innerText = name;
   document.getElementById('contractPlan').innerText = selectedPlan;
   document.getElementById('contractFirstPayment').innerText = firstPayment;
   document.getElementById('contractDate').innerText = persianDate;
