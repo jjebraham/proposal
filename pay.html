@@ -84,9 +84,9 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
       <button class="btn-light" onclick="clearSignature()">پاک کردن امضا</button>
     </div>
 
-    <button id="generateBtn" class="btn-submit" onclick="generateSignedPdf()">ثبت امضا و دانلود قرارداد</button>
-    <div class="success-message" id="successMessage">قرارداد با موفقیت ذخیره و دانلود شد. اکنون بخش پرداخت فعال است.</div>
-    <div class="warning-message" id="warningMessage">PDF دانلود شد، اما ذخیره روی سرور انجام نشد. لطفاً نسخه دانلودشده را در واتساپ ارسال کنید.</div>
+    <button id="generateBtn" class="btn-submit" onclick="generateSignedPdf()">ثبت امضا و ذخیره قرارداد</button>
+    <div class="success-message" id="successMessage">قرارداد امضاشده ذخیره شد. اکنون می‌توانید قسط اول را پرداخت کنید.</div>
+    <div class="warning-message" id="warningMessage">قرارداد ساخته شد، اما ذخیره روی سرور انجام نشد. لطفاً دوباره تلاش کنید یا فایل را بعداً دانلود و در واتساپ ارسال کنید.</div>
   </div>
 
   <div class="card">
@@ -169,6 +169,7 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
     <div class="payment locked" id="paymentBox">
       <strong>USDT (BEP20):</strong>
       <code class="wallet" id="wallet">0x02a93c138346AFc5d8F6a4B9e23b0167a8B55FD3</code>
+      <button id="downloadContractBtn" class="btn-main" onclick="downloadSignedContract()" disabled>دانلود قرارداد امضاشده</button>
       <button id="copyBtn" class="copy-btn" onclick="copyWallet()" disabled>کپی آدرس کیف پول</button>
       <p style="margin-top:.8rem;font-size:12px">بعد از پرداخت، رسید یا Hash تراکنش را ارسال کنید.</p>
       <button id="whatsappBtn" class="btn-main" onclick="confirmPayment()" disabled>ارسال تأیید پرداخت در واتساپ</button>
@@ -185,6 +186,8 @@ const selectedPlan = params.get('plan') || '۳۰۰ دلار در ماه — ۶ �
 const firstPayment = selectedPlan.includes('۲۵۰') ? '۲۵۰ USDT' : '۳۰۰ USDT';
 const persianDate = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { dateStyle: 'full' }).format(new Date());
 
+let signedPdfBlob = null;
+let signedPdfFileName = '';
 let savedContractFilename = '';
 
 document.getElementById('planText').innerText = selectedPlan;
@@ -329,6 +332,7 @@ function enablePayment(){
   paymentBox.classList.add('highlight');
   setTimeout(() => paymentBox.classList.remove('highlight'), 2500);
 
+  document.getElementById('downloadContractBtn').disabled = false;
   document.getElementById('copyBtn').disabled = false;
   document.getElementById('whatsappBtn').disabled = false;
   document.getElementById('paymentSection').scrollIntoView({behavior:'smooth', block:'start'});
@@ -431,29 +435,19 @@ async function generateSignedPdf(){
     const finalHeight = Math.min(imgHeight, maxHeight);
     pdf.addImage(imgData, 'JPEG', margin, margin, imgWidth, finalHeight);
 
-    const blob = pdf.output('blob');
+    signedPdfBlob = pdf.output('blob');
+    signedPdfFileName = `signed-contract-${Date.now()}.pdf`;
 
     let serverSaved = false;
     try {
-      await savePdfToServer(blob, name, phone);
+      await savePdfToServer(signedPdfBlob, name, phone);
       serverSaved = true;
     } catch (err) {
       console.error('❌ Server save failed:', err);
     }
 
-    const fileName = `signed-contract-${Date.now()}.pdf`;
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-
     if (serverSaved) {
       enablePayment();
-      alert('✅ قرارداد با موفقیت ذخیره و دانلود شد');
     } else {
       document.getElementById('warningMessage').style.display = 'block';
       enablePayment();
@@ -461,8 +455,24 @@ async function generateSignedPdf(){
 
   } finally {
     btn.disabled = false;
-    btn.innerText = 'ثبت امضا و دانلود قرارداد';
+    btn.innerText = 'ثبت امضا و ذخیره قرارداد';
   }
+}
+
+
+function downloadSignedContract(){
+  if(!signedPdfBlob) {
+    alert('ابتدا قرارداد را امضا و ثبت کنید');
+    return;
+  }
+  const url = URL.createObjectURL(signedPdfBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = signedPdfFileName || 'signed-contract.pdf';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function confirmPayment(){
