@@ -35,16 +35,16 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
 .contract-preview h4{margin-top:.9rem;margin-bottom:.4rem;font-size:14px;color:#0f172a}
 .contract-preview ul{margin:0.4rem 1.2rem 0.6rem 0;padding:0;list-style-position:outside}
 .contract-preview li{display:list-item;line-height:2;text-align:right}
-.contract-preview.pdf-compact{padding:.75rem;font-size:10.2px;line-height:1.45}
-.contract-preview.pdf-compact h3{font-size:13px;margin-bottom:.3rem}
-.contract-preview.pdf-compact h4{font-size:10.8px;margin-top:.38rem;margin-bottom:.2rem}
-.contract-preview.pdf-compact p{margin-bottom:.14rem}
-.contract-preview.pdf-compact ul{margin:.12rem .85rem .2rem 0}
-.contract-preview.pdf-compact li{line-height:1.35;margin-bottom:.05rem}
-.contract-preview.pdf-compact .signature-row{margin-top:.45rem;gap:8px;align-items:flex-end;flex-wrap:nowrap}
-.contract-preview.pdf-compact .sig-box{min-width:0;width:49%;padding-top:.35rem}
+.contract-preview.pdf-compact{padding:.65rem;font-size:9.8px;line-height:1.35}
+.contract-preview.pdf-compact h3{font-size:12.4px;margin-bottom:.22rem}
+.contract-preview.pdf-compact h4{font-size:10.2px;margin-top:.3rem;margin-bottom:.12rem}
+.contract-preview.pdf-compact p{margin-bottom:.08rem}
+.contract-preview.pdf-compact ul{margin:.08rem .78rem .14rem 0}
+.contract-preview.pdf-compact li{line-height:1.25;margin-bottom:.03rem}
+.contract-preview.pdf-compact .signature-row{margin-top:.34rem;gap:7px;align-items:flex-end;flex-wrap:nowrap}
+.contract-preview.pdf-compact .sig-box{min-width:0;width:49%;padding-top:.22rem}
 .contract-preview.pdf-compact #contractorSignatureBlock img,
-.contract-preview.pdf-compact #clientSignaturePreview{max-height:44px;max-width:130px}
+.contract-preview.pdf-compact #clientSignaturePreview{max-height:46px;max-width:140px}
 .signature-row{display:flex;justify-content:space-between;gap:12px;margin-top:1rem;align-items:flex-end;flex-wrap:wrap}
 .sig-box{border-top:1px dashed #94a3b8;padding-top:.6rem;min-width:240px}
 #contractorSignatureBlock img{max-height:64px;max-width:180px;display:block}
@@ -84,9 +84,9 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
       <button class="btn-light" onclick="clearSignature()">پاک کردن امضا</button>
     </div>
 
-    <button id="generateBtn" class="btn-submit" onclick="generateSignedPdf()">ثبت امضا و دانلود قرارداد</button>
-    <div class="success-message" id="successMessage">قرارداد با موفقیت ذخیره و دانلود شد. اکنون بخش پرداخت فعال است.</div>
-    <div class="warning-message" id="warningMessage">PDF دانلود شد، اما ذخیره روی سرور انجام نشد. لطفاً نسخه دانلودشده را در واتساپ ارسال کنید.</div>
+    <button id="generateBtn" class="btn-submit" onclick="generateSignedPdf()">ثبت امضا و ذخیره قرارداد</button>
+    <div class="success-message" id="successMessage">قرارداد امضاشده ذخیره شد. اکنون می‌توانید قسط اول را پرداخت کنید.</div>
+    <div class="warning-message" id="warningMessage">قرارداد ساخته شد، اما ذخیره روی سرور انجام نشد. لطفاً دوباره تلاش کنید یا فایل را بعداً دانلود و در واتساپ ارسال کنید.</div>
   </div>
 
   <div class="card">
@@ -169,6 +169,7 @@ canvas{width:100%;height:180px;border:2px dashed #cbd5e1;border-radius:16px;back
     <div class="payment locked" id="paymentBox">
       <strong>USDT (BEP20):</strong>
       <code class="wallet" id="wallet">0x02a93c138346AFc5d8F6a4B9e23b0167a8B55FD3</code>
+      <button id="downloadContractBtn" class="btn-main" onclick="downloadSignedContract()" disabled>دانلود قرارداد امضاشده</button>
       <button id="copyBtn" class="copy-btn" onclick="copyWallet()" disabled>کپی آدرس کیف پول</button>
       <p style="margin-top:.8rem;font-size:12px">بعد از پرداخت، رسید یا Hash تراکنش را ارسال کنید.</p>
       <button id="whatsappBtn" class="btn-main" onclick="confirmPayment()" disabled>ارسال تأیید پرداخت در واتساپ</button>
@@ -185,6 +186,8 @@ const selectedPlan = params.get('plan') || '۳۰۰ دلار در ماه — ۶ �
 const firstPayment = selectedPlan.includes('۲۵۰') ? '۲۵۰ USDT' : '۳۰۰ USDT';
 const persianDate = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { dateStyle: 'full' }).format(new Date());
 
+let signedPdfBlob = null;
+let signedPdfFileName = '';
 let savedContractFilename = '';
 
 document.getElementById('planText').innerText = selectedPlan;
@@ -329,6 +332,7 @@ function enablePayment(){
   paymentBox.classList.add('highlight');
   setTimeout(() => paymentBox.classList.remove('highlight'), 2500);
 
+  document.getElementById('downloadContractBtn').disabled = false;
   document.getElementById('copyBtn').disabled = false;
   document.getElementById('whatsappBtn').disabled = false;
   document.getElementById('paymentSection').scrollIntoView({behavior:'smooth', block:'start'});
@@ -370,15 +374,54 @@ async function generateSignedPdf(){
     }
 
     const contractElement = document.getElementById('contractPreview');
-    contractElement.classList.add('pdf-compact');
-    const canvasImage = await html2canvas(contractElement, {
-      scale: 1.05,
-      useCORS: true,
-      backgroundColor: '#ffffff'
-    });
-    contractElement.classList.remove('pdf-compact');
+    const originalStyles = {
+      width: contractElement.style.width,
+      maxWidth: contractElement.style.maxWidth,
+      minWidth: contractElement.style.minWidth,
+      background: contractElement.style.background
+    };
 
-    const imgData = canvasImage.toDataURL('image/jpeg', 0.78);
+    let canvasImage;
+    try {
+      contractElement.classList.add('pdf-compact');
+      contractElement.style.width = '794px';
+      contractElement.style.maxWidth = '794px';
+      contractElement.style.minWidth = '794px';
+      contractElement.style.background = '#ffffff';
+
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      await new Promise(resolve => setTimeout(resolve, 260));
+
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+
+      const images = Array.from(contractElement.querySelectorAll('img'));
+      await Promise.all(images.map((img) => {
+        if (img.complete) return Promise.resolve();
+        return new Promise((resolve) => {
+          img.addEventListener('load', resolve, { once: true });
+          img.addEventListener('error', resolve, { once: true });
+        });
+      }));
+
+      canvasImage = await html2canvas(contractElement, {
+        scale: 1.3,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        windowWidth: 900,
+        scrollX: 0,
+        scrollY: 0
+      });
+    } finally {
+      contractElement.style.width = originalStyles.width;
+      contractElement.style.maxWidth = originalStyles.maxWidth;
+      contractElement.style.minWidth = originalStyles.minWidth;
+      contractElement.style.background = originalStyles.background;
+      contractElement.classList.remove('pdf-compact');
+    }
+
+    const imgData = canvasImage.toDataURL('image/jpeg', 0.82);
 
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p', 'mm', 'a4');
@@ -392,22 +435,19 @@ async function generateSignedPdf(){
     const finalHeight = Math.min(imgHeight, maxHeight);
     pdf.addImage(imgData, 'JPEG', margin, margin, imgWidth, finalHeight);
 
-    const blob = pdf.output('blob');
+    signedPdfBlob = pdf.output('blob');
+    signedPdfFileName = `signed-contract-${Date.now()}.pdf`;
 
     let serverSaved = false;
     try {
-      await savePdfToServer(blob, name, phone);
+      await savePdfToServer(signedPdfBlob, name, phone);
       serverSaved = true;
     } catch (err) {
       console.error('❌ Server save failed:', err);
     }
 
-    const fileName = `signed-contract-${Date.now()}.pdf`;
-    pdf.save(fileName);
-
     if (serverSaved) {
       enablePayment();
-      alert('✅ قرارداد با موفقیت ذخیره و دانلود شد');
     } else {
       document.getElementById('warningMessage').style.display = 'block';
       enablePayment();
@@ -415,8 +455,24 @@ async function generateSignedPdf(){
 
   } finally {
     btn.disabled = false;
-    btn.innerText = 'ثبت امضا و دانلود قرارداد';
+    btn.innerText = 'ثبت امضا و ذخیره قرارداد';
   }
+}
+
+
+function downloadSignedContract(){
+  if(!signedPdfBlob) {
+    alert('ابتدا قرارداد را امضا و ثبت کنید');
+    return;
+  }
+  const url = URL.createObjectURL(signedPdfBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = signedPdfFileName || 'signed-contract.pdf';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function confirmPayment(){
